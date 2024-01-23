@@ -8,7 +8,7 @@ def create_app() -> FastAPI:
     app_ = FastAPI(
         title='Turplanlegger',
         description='Turplanlegger API',
-        version='1.0.0',
+        version=__version__,
     )
     init_routers(app_=app_)
 
