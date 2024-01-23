@@ -3,9 +3,7 @@ from turplanlegger.__about__ import __version__
 
 
 router = APIRouter(
-    prefix="",
     tags=["helpers"],
-    dependencies=[],
     responses={404: {"description": "Not found"}},
 )
 
