@@ -37,9 +37,9 @@ dev = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/unknown/turplanlegger-fastapi#readme"
-Issues = "https://github.com/unknown/turplanlegger-fastapi/issues"
-Source = "https://github.com/unknown/turplanlegger-fastapi"
+Documentation = "https://github.com/Turplanlegger/turplanlegger-fastapi#readme"
+Issues = "https://github.com/Turplanlegger/turplanlegger-fastapi/issues"
+Source = "https://github.com/Turplanlegger/turplanlegger-fastapi"
 
 [tool.hatch.version]
 path = "src/turplanlegger/__about__.py"
