@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "turplanlegger-fastapi"
 dynamic = ["version"]
-description = 'API for planing trips but Fast'
+description = 'API for planning trips but Fast'
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
