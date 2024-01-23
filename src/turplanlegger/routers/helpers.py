@@ -17,7 +17,6 @@ async def root():
 async def test():
     return {"status": "ok"}
 
-
 @router.get('/version', description="Gets the current version of the API")
 async def get_version():
     return {"version": __version__}
