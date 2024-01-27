@@ -25,15 +25,19 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-    "fastapi==0.109.0"
+  "fastapi==0.109.0"
 ]
 [project.optional-dependencies]
 dev = [
-    "hatch==1.9.2",
-    "pre-commit==3.6.0",
-    "pytest==7.4.4",
-    "pytest-cov==4.1.0",
-    "ruff==v0.1.14"
+  "hatch==1.9.2",
+  "pre-commit==3.6.0",
+  "pytest==7.4.4",
+  "pytest-cov==4.1.0",
+  "ruff==v0.1.14"
+]
+
+prod = [
+  "uvicorn==0.27.0",
 ]
 
 [project.urls]
