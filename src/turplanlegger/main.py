@@ -1,8 +1,8 @@
-from fastapi import FastAPI
 import fastapi
-
-from turplanlegger.routers import helpers
+from fastapi import FastAPI
 from turplanlegger.__about__ import __version__
+from turplanlegger.routers import helpers
+
 
 def create_app() -> FastAPI:
     app_ = FastAPI(
