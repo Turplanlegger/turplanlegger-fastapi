@@ -105,3 +105,6 @@ target-version = "py312"
 
 [tool.ruff.flake8-quotes]
 inline-quotes = "single"
+
+[tool.ruff.format]
+quote-style = "single"
