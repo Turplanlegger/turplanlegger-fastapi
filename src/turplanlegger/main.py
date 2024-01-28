@@ -14,6 +14,7 @@ def create_app() -> FastAPI:
 
     return app_
 
+
 def init_routers(app_: fastapi):
     app_.include_router(
         helpers.router,
@@ -22,4 +23,3 @@ def init_routers(app_: fastapi):
 
 
 app = create_app()
-
