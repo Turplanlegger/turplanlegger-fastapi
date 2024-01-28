@@ -54,6 +54,7 @@ dependencies = [
   "pytest",
 ]
 [tool.hatch.envs.default.scripts]
+lint = "pre-commit run -a --show-diff-on-failure"
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
 cov-report = [
@@ -74,7 +75,6 @@ dependencies = [
 ]
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/turplanlegger tests}"
-lint = "pre-commit run -a --show-diff-on-failure"
 
 [tool.coverage.run]
 source_pkgs = ["turplanlegger", "tests"]
