@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "turplanlegger"
+name = "Turplanlegger-API"
 dynamic = ["version"]
 description = 'API for planning trips but Fast'
 readme = "README.md"
