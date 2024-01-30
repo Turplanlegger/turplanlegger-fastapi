@@ -1,8 +1,8 @@
 import fastapi
 from fastapi import FastAPI
+from functools import lru_cache
 from turplanlegger.__about__ import __version__
 from turplanlegger.routers import helpers
-
 
 from turplanlegger.config.config import Settings
 
@@ -25,7 +25,8 @@ def init_routers(app_: fastapi):
         prefix='/v1'
     )
 
-settings =  Settings()
-print(settings.DATABASE_URI)
+@lru_cache
+def get_settings():
+    return Settings()
 
 app = create_app()

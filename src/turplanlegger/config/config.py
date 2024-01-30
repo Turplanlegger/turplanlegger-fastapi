@@ -1,7 +1,16 @@
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+"""
+Settings: Field Value Priority
+In the case where a value is specified for the same Settings field in multiple ways, the selected value is determined as follows (in descending order of priority):
 
+Arguments passed to the Settings class initialiser.
+Environment variables, e.g. TP_VariableName.
+Variables loaded from a dotenv (.env) file.
+Variables loaded from the secrets directory.
+The default field values for the Settings model.
+"""
 class Settings(BaseSettings):
     # Database
     DATABASE_URI: str = Field(min_length=1)
