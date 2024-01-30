@@ -9,7 +9,7 @@ updates:
       - "pip dependencies"
       - "dependencies"
     commit-message:
-      prefix: ":arrow_up: DEPENDENCY"
+      prefix: ":arrow_up: Dependency"
 
   - package-ecosystem: "docker"
     directory: "/"
@@ -20,7 +20,7 @@ updates:
       - "Docker dependencies"
       - "dependencies"
     commit-message:
-      prefix: ":whale: DOCKER"
+      prefix: ":whale: Docker"
 
   - package-ecosystem: "github-actions"
     directory: "/"

@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from turplanlegger.__about__ import __version__
 
-
 router = APIRouter(
     tags=['helpers'],
     responses={404: {'description': 'Not found'}},

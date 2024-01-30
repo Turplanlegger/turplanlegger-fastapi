@@ -1,5 +1,6 @@
 import fastapi
 from fastapi import FastAPI
+<<<<<<< HEAD
 from functools import lru_cache
 from turplanlegger.__about__ import __version__
 from turplanlegger.routers import helpers
@@ -7,6 +8,11 @@ from turplanlegger.routers import helpers
 from turplanlegger.config.config import Settings
 
 
+=======
+from turplanlegger.__about__ import __version__
+from turplanlegger.routers import helpers
+
+>>>>>>> main
 
 def create_app() -> FastAPI:
     app_ = FastAPI(
@@ -25,8 +31,11 @@ def init_routers(app_: fastapi):
         prefix='/v1'
     )
 
+<<<<<<< HEAD
 @lru_cache
 def get_settings():
     return Settings()
+=======
+>>>>>>> main
 
 app = create_app()
