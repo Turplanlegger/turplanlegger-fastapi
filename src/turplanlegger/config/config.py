@@ -3,7 +3,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 """
 Settings: Field Value Priority
-In the case where a value is specified for the same Settings field in multiple ways, the selected value is determined as follows (in descending order of priority):
+In the case where a value is specified for the same Settings field in multiple ways,
+the selected value is determined as follows (in descending order of priority):
 
 Arguments passed to the Settings class initialiser.
 Environment variables, e.g. TP_VariableName.
@@ -19,4 +20,4 @@ class Settings(BaseSettings):
     # Logging
     CORS_ORIGINS: list = Field(['http://localhost:3000'])
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding='utf-8', env_prefix='TP_')
+    model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8', env_prefix='TP_')

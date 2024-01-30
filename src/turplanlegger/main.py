@@ -2,13 +2,9 @@ import fastapi
 from fastapi import FastAPI
 from functools import lru_cache
 from turplanlegger.__about__ import __version__
-from turplanlegger.routers import helpers
-
 from turplanlegger.config.config import Settings
-
-
-from turplanlegger.__about__ import __version__
 from turplanlegger.routers import helpers
+
 
 
 def create_app() -> FastAPI:
