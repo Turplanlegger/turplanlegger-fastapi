@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "turplanlegger-fastapi"
+name = "Turplanlegger-API"
 dynamic = ["version"]
 description = 'API for planning trips but Fast'
 readme = "README.md"
@@ -25,15 +25,19 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-    "fastapi==0.109.0"
+  "fastapi==0.109.0"
 ]
 [project.optional-dependencies]
 dev = [
-    "hatch==1.9.2",
-    "pre-commit==3.6.0",
-    "pytest==7.4.4",
-    "pytest-cov==4.1.0",
-    "ruff==v0.1.14"
+  "hatch==1.9.2",
+  "pre-commit==3.6.0",
+  "pytest==7.4.4",
+  "pytest-cov==4.1.0",
+  "ruff==v0.1.14"
+]
+
+prod = [
+  "uvicorn==0.27.0",
 ]
 
 [project.urls]
@@ -91,15 +95,8 @@ exclude_lines = [
   "if TYPE_CHECKING:",
 ]
 
-[tool.hatch.build.targets.sdist]
-include = [
-    "src/turplanlegger",
-]
-
 [tool.hatch.build.targets.wheel]
-include = [
-    "src/turplanlegger",
-]
+packages = ["src/turplanlegger"]
 
 [tool.ruff]
 select = ["E", "W", "Q", "I", "F", "YTT", "C4", "T10", "ISC", "ICN", "RSE"]

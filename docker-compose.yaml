@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  dev-api:
+    build:
+      context: .
+    hostname: turplanlegger-dev-api
+    restart: unless-stopped
+    ports:
+      - ${TP_PORT:-8080}:4000
+    depends_on:
+      - dev-db
+    networks:
+      - turplanlegger-dev-network
+
+  dev-db:
+    image: postgres:16-alpine
+    hostname:  turplanlegger-dev-db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    ports:
+      - ${TP_POSTGRES_PORT:-5432}:5432
+    environment:
+      - POSTGRES_USER=${TP_POSTGRES_USER:-turadm}
+      - POSTGRES_PASSWORD=${TP_POSTGRES_PASSWORD:-passord}
+      - POSTGRES_DB=${TP_POSTGRES_DB:-turplanlegger}
+    networks:
+      - turplanlegger-dev-network
+
+networks:
+  turplanlegger-dev-network:
+    name: turplanlegger-dev-network
