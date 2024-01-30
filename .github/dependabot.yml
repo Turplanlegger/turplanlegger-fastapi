@@ -1,0 +1,35 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "develop"
+    labels:
+      - "pip dependencies"
+      - "dependencies"
+    commit-message:
+      prefix: ":arrow_up: DEPENDENCY"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "develop"
+    labels:
+      - "Docker dependencies"
+      - "dependencies"
+    commit-message:
+      prefix: ":whale: DOCKER"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "develop"
+    labels:
+      - "GitHub-actions dependencies"
+      - "dependencies"
+    commit-message:
+      prefix: ":construction_worker: CI"
+
