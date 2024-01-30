@@ -15,7 +15,10 @@ def create_app() -> FastAPI:
     return app_
 
 def init_routers(app_: fastapi):
-    app_.include_router(helpers.router)
+    app_.include_router(
+        helpers.router,
+        prefix='/v1'
+    )
 
 
 app = create_app()
