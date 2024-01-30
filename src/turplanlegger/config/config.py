@@ -1,6 +1,3 @@
-from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
 """
 Settings: Field Value Priority
 In the case where a value is specified for the same Settings field in multiple ways,
@@ -12,6 +9,11 @@ Variables loaded from a dotenv (.env) file.
 Variables loaded from the secrets directory.
 The default field values for the Settings model.
 """
+
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
 class Settings(BaseSettings):
     # Database
     DATABASE_URI: str = Field(min_length=1)
