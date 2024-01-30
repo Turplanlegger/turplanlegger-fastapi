@@ -4,7 +4,7 @@ In the case where a value is specified for the same Settings field in multiple w
 the selected value is determined as follows (in descending order of priority):
 
 Arguments passed to the Settings class initialiser.
-Environment variables, e.g. TP_VariableName.
+Environment variables, e.g. TP_VARIABLENAME.
 Variables loaded from a dotenv (.env) file.
 Variables loaded from the secrets directory.
 The default field values for the Settings model.
