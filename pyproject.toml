@@ -1,0 +1,104 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "Turplanlegger-API"
+dynamic = ["version"]
+description = 'API for planning trips but Fast'
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Are Schjetne", email = "sixcare.as@gmail.com" },
+  { name = "Petter Bjørkås", email = "peseb@icloud.com" },
+  { name = "Martin Høgli", email = "martin.lindelien@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "fastapi==0.109.0"
+]
+[project.optional-dependencies]
+dev = [
+  "hatch==1.9.2",
+  "pre-commit==3.6.0",
+  "pytest==7.4.4",
+  "pytest-cov==4.1.0",
+  "ruff==v0.1.14",
+  "httpx==0.26.0"
+]
+
+prod = [
+  "uvicorn==0.27.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/Turplanlegger/turplanlegger-fastapi#readme"
+Issues = "https://github.com/Turplanlegger/turplanlegger-fastapi/issues"
+Source = "https://github.com/Turplanlegger/turplanlegger-fastapi"
+
+[tool.hatch.version]
+path = "src/turplanlegger/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pytest==7.4.4",
+  "pytest-cov==4.1.0",
+  "httpx==0.26.0",
+]
+[tool.hatch.envs.default.scripts]
+lint = "pre-commit run -a --show-diff-on-failure"
+test = "pytest {args:tests}"
+test-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/turplanlegger {args:tests}"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/turplanlegger tests}"
+
+[tool.coverage.run]
+source_pkgs = ["turplanlegger", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/turplanlegger/__about__.py",
+]
+
+[tool.coverage.paths]
+turplanlegger = ["src/turplanlegger", "*/turplanlegger-fastapi/src/turplanlegger"]
+tests = ["tests", "*/turplanlegger-fastapi/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/turplanlegger"]
+
+[tool.ruff]
+select = ["E", "W", "Q", "I", "F", "YTT", "C4", "T10", "ISC", "ICN", "RSE"]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.format]
+quote-style = "single"
