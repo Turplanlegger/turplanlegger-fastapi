@@ -12,7 +12,6 @@ def create_app() -> FastAPI:
         description='Turplanlegger API',
         version=__version__,
     )
-    app_.state.config = Settings()
     init_routers(app_=app_)
 
     return app_
@@ -23,6 +22,10 @@ def init_routers(app_: fastapi):
         helpers.router,
         prefix='/v1'
     )
+
+@lru_cache
+def get_settings():
+    return Settings()
 
 
 app = create_app()
