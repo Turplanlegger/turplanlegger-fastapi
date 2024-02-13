@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from sqlmodel import SQLModel
 from turplanlegger.__about__ import __version__
 from turplanlegger.routers import helpers
-from turplanlegger.sql.database import SQLModel, engine, session
+from turplanlegger.sql.database import Database
 
 
 def create_app() -> FastAPI:
@@ -25,8 +25,10 @@ def init_routers(app_: fastapi):
     )
 
 def init_db(app_: fastapi):
-    SQLModel.metadata.create_all(engine)
-    app_.db_session = session
+    db = Database()
+
+    app_.state.db_engine = db.connect()
+    app_.state.db_session = db.session(app_.state.db_engine)
 
 
 app = create_app()

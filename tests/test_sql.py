@@ -14,9 +14,8 @@ def test_sql_users():
         last_name='MyMan',
         email='myman@martin.com',
     )
-    print(user1)
 
-    session = client.app.db_session
+    session = client.app.state.db_session
     session.add(user1)
     session.commit()
 
