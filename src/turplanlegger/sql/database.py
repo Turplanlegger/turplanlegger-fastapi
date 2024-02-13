@@ -3,12 +3,17 @@ from sqlmodel import SQLModel, create_engine
 from turplanlegger.sql import models
 
 class Database:
+  def __init__():
+    self.uri = 'postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-fastapi'
+    self.debug = True
+
   def connect(self):
     engine = create_engine(
-      'postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-api',
-      echo=True
+      self.uri,
+      echo=self.debug
     )
     SQLModel.metadata.create_all(engine)
     return engine
 
-engine = Database().connect()
+db = Database()
+engine = db.connect()
