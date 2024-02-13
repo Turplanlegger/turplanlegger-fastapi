@@ -1,0 +1,57 @@
+name: Deploy Azure infrastructure
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/azure-deploy.yaml
+      - infrastructure/**
+  pull_request:
+    paths:
+      - .github/workflows/azure-deploy.yaml
+      - infrastructure/**
+
+concurrency: ${{ github.workflow }}
+
+env:
+  ARM_USE_OIDC: true
+  ARM_USE_AZUREAD: true
+  ARM_TENANT_ID: c8698f43-ee75-4717-aa8a-d54328dbbe5f
+  ARM_SUBSCRIPTION_ID: 0c78b338-b4f9-4c41-81ca-a4e9d7ea186d
+  ARM_CLIENT_ID: 
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infrastructure
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -input=false -out=plan
+
+      - name: Add plan to summary
+        run: |
+          echo '```terraform' >> $GITHUB_STEP_SUMMARY
+          terraform-bin show -no-color plan >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply plan
