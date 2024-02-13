@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 from turplanlegger.main import app
-from turplanlegger.sql.database import engine
-from turplanlegger.sql.schemas import Users
+from turplanlegger.sql.models import Users
 
 from sqlmodel import Session, select
 from uuid import uuid4
@@ -17,10 +16,13 @@ def test_sql_users():
     )
     print(user1)
 
-    session = Session(engine)
+    session = client.app.db_session
     session.add(user1)
     session.commit()
 
     statement = select(Users)
-    print(session.exec(statement))
-    assert False
+    result = session.exec(statement)
+    for user in result:
+        assert user.first_name == 'Martin'
+        assert user.last_name == 'MyMan'
+        assert user.email == 'myman@martin.com'
