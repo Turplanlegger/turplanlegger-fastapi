@@ -30,8 +30,7 @@ jobs:
             --title "Release ${{ env.NEW_VERSION }}" \
             --generate-notes \
             --latest \
-            docker-compose.yml \
-            docker-compose.dev.yml
+            docker-compose.yaml
 
   build-and-push-docker-image:
     name: Build and publish Docker image to GitHub Packages
