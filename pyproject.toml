@@ -25,8 +25,8 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-    "fastapi==0.109.0",
-    "pydantic_settings==2.1.0"
+  "fastapi==0.109.0",
+  "pydantic_settings==2.1.0",
 ]
 [project.optional-dependencies]
 dev = [
