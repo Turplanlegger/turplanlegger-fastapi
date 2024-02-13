@@ -1,6 +1,4 @@
 from fastapi import APIRouter
-from turplanlegger.__about__ import __version__
-
 from turplanlegger.main import get_settings
 
 router = APIRouter(
