@@ -1,10 +1,14 @@
 from fastapi import APIRouter
 from turplanlegger.__about__ import __version__
 
+from turplanlegger.main import get_settings
+
 router = APIRouter(
     tags=['helpers'],
     responses={404: {'description': 'Not found'}},
 )
+
+settings = get_settings()
 
 @router.get('/', description='Nothing to see here')
 async def root():
@@ -18,4 +22,4 @@ async def test():
 
 @router.get('/version', description='Gets the current version of the API')
 async def get_version():
-    return {'version': __version__}
+    return {'version': settings.CORS_ORIGINS}
