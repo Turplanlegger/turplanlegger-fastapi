@@ -12,23 +12,20 @@ def create_app() -> FastAPI:
         description='Turplanlegger API',
         version=__version__,
     )
-    init_routers(app_=app_)
-    init_db(app_=app_)
 
-    return app_
-
-
-def init_routers(app_: fastapi):
     app_.include_router(
         helpers.router,
         prefix='/v1'
     )
+    app_.include_router(
+        users.router,
+        prefix='/v1'
+    )
 
-def init_db(app_: fastapi):
-    db = Database()
+    init_db()
 
-    app_.state.db_engine = db.connect()
-    app_.state.db_session = db.session(app_.state.db_engine)
+    return app_
+
 
 
 app = create_app()
