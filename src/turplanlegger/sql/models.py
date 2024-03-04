@@ -1,20 +1,27 @@
 from typing import Optional
-from sqlmodel import Field, SQLModel, JSON
+from sqlmodel import Field, SQLModel
 from datetime import datetime
+import uuid
 
 
-class Users(SQLModel, table=True):
+class User(SQLModel, table=True):
   __tablename__ = "users"
-  id: Optional[str] = Field(default=None, primary_key=True)
-  first_name: str = Field(nullable=False)
-  last_name: str = Field(nullable=False)
-  email: str = Field(nullable=False)
-  auth_method: Optional[str] = Field(default=None)
-  password: Optional[str] = Field(default=None)
-  private: bool = Field(default=False)
-  create_time: datetime = Field(default_factory=datetime.utcnow, nullable=False)
-  deleted: bool = Field(default=False)
-  delete_time: datetime = Field(default_factory=datetime.utcnow, nullable=False)
+  id: uuid.UUID = Field(
+    default_factory=uuid.uuid4,
+    primary_key=True,
+    index=True,
+    nullable=False,
+    description="ID of the user as UUID"
+  )
+  first_name: str
+  last_name: str
+  email: str
+  auth_method: Optional[str] = Field(default='basic', nullable=True)
+  password: Optional[str] = Field(nullable=True)
+  private: bool = False
+  create_time: datetime = datetime.utcnow()
+  deleted: Optional[bool] = False
+  delete_time: Optional[datetime]
 
 # class Routes(SQLModel, table=True):
 #   __tablename__ = "routes"
