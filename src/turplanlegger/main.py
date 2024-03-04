@@ -1,9 +1,9 @@
 import fastapi
 from fastapi import FastAPI
 from sqlmodel import SQLModel
-from turplanlegger.__about__ import __version__
-from turplanlegger.routers import helpers
-from turplanlegger.sql.database import Database
+from .__about__ import __version__
+from .routers import helpers, users
+from .sql.database import init_db
 
 
 def create_app() -> FastAPI:
