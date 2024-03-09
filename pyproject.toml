@@ -50,12 +50,6 @@ Source = "https://github.com/Turplanlegger/turplanlegger-fastapi"
 [tool.hatch.version]
 path = "src/turplanlegger/__about__.py"
 
-[tool.hatch.envs.default]
-dependencies = [
-  "pytest==7.4.4",
-  "pytest-cov==4.1.0",
-  "httpx==0.26.0",
-]
 [tool.hatch.envs.default.scripts]
 lint = "pre-commit run -a --show-diff-on-failure"
 test = "pytest {args:tests}"
