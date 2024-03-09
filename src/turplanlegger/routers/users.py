@@ -30,16 +30,7 @@ async def all_users(session: Session = Depends(get_session)):
 
 @router.post("/", response_model=User)
 def create_user(user: User, session: Session = Depends(get_session)):
-    db_user = User(
-        id=user.id,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        email=user.email,
-        auth_method=user.auth_method,
-        hashed_password=user.password,
-        private=user.private
-    )
-    session.add(db_user)
+    session.add(user)
     session.commit()
-    session.refresh(db_user)
-    return db_user
+    session.refresh(user)
+    return user
