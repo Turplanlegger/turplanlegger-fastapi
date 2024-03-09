@@ -13,7 +13,7 @@ async def root():
     return {'message': 'Hello World'}
 
 
-@router.get('/test', description='Returns OK if API is running')
+@router.get('/test', description='Test if the API replies')
 async def test():
     return {'status': 'ok'}
 

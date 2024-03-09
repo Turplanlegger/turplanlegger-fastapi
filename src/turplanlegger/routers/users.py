@@ -26,8 +26,9 @@ async def all_users(session: Session = Depends(get_session)):
         ) for user in result
     ]
 
-@router.post('/', response_model=User)
+@router.post('/', description='Create a new user', response_model=User)
 def create_user(user: User, session: Session = Depends(get_session)):
+    # Needs a check if the user exists before trying to create
     session.add(user)
     session.commit()
     session.refresh(user)

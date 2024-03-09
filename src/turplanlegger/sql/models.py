@@ -8,36 +8,50 @@ from sqlmodel import Field, SQLModel
 
 
 class User(SQLModel, table=True):
-  __tablename__ = 'users'
-  id: uuid.UUID = Field(
+    """User SQLModel
+    Attributes:
+        id (str): UUID of the user
+        name (str): First name of the user
+        last_name (str): Last name/sir name of the user
+        email (str): Email of the user
+        private (bool): Flag if the user should be private or public
+                        Default: False
+        deleted (bool): Flag if the user has logically been deleted
+        delete_time (datetime): Time of the deletion of the user
+        create_time (datetime): Time of creation,
+                                Default: datetime.now()
+    """
+    __tablename__ = 'users'
+    id: uuid.UUID = Field(
     default_factory=uuid.uuid4,
     primary_key=True,
     index=True,
     nullable=False,
     description='ID of the user as UUID'
-  )
-  first_name: str = Field(
-    sa_column=Column(
-      type_=TEXT,
-      nullable=False
     )
-  )
-  last_name: str = Field(
+    first_name: str = Field(
     sa_column=Column(
-      type_=TEXT,
-      nullable=False
+        type_=TEXT,
+        nullable=False
     )
-  )
-  email: str = Field(
+    )
+    last_name: str = Field(
     sa_column=Column(
-      type_=TEXT,
-      nullable=False
+        type_=TEXT,
+        nullable=False
     )
-  )
-  private: bool = False
-  create_time: datetime = datetime.now(UTC)
-  deleted: Optional[bool] = False
-  delete_time: Optional[datetime]
+    )
+    email: str = Field(
+    sa_column=Column(
+        type_=TEXT,
+        nullable=False
+    )
+    )
+    private: bool = False
+    create_time: datetime = datetime.now(UTC)
+    deleted: Optional[bool] = False
+    delete_time: Optional[datetime]
+
 
 # class Routes(SQLModel, table=True):
 #   __tablename__ = "routes"

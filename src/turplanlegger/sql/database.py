@@ -15,7 +15,7 @@ def get_session():
     with Session(engine) as session:
         yield session
 
-def empty_table(model: str):
+def empty_table(model: type) -> None:
     with Session(engine) as session:
         statement = delete(model)
         session.exec(statement)
