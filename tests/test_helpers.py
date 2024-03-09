@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from turplanlegger.main import app
+from src.turplanlegger.main import app
 
 client = TestClient(app)
 
