@@ -1,10 +1,8 @@
 from fastapi import APIRouter, Depends
-from sqlmodel import select
-from sqlmodel import Session
+from sqlmodel import Session, select
 
-from ..sql.models import User
 from ..sql.database import get_session
-from ..__about__ import __version__
+from ..sql.models import User
 
 router = APIRouter(
     tags=['users'],
@@ -28,7 +26,7 @@ async def all_users(session: Session = Depends(get_session)):
         ) for user in result
     ]
 
-@router.post("/", response_model=User)
+@router.post('/', response_model=User)
 def create_user(user: User, session: Session = Depends(get_session)):
     session.add(user)
     session.commit()

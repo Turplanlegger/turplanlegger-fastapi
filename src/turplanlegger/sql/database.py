@@ -1,8 +1,7 @@
 
-from typing import Optional
-from sqlmodel import delete, SQLModel, Session, create_engine
 from os import environ
 
+from sqlmodel import Session, SQLModel, create_engine, delete
 
 DATABASE_URI = environ.get('TP_DATABASE_URI','postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-fastapi')
 DEBUG = True

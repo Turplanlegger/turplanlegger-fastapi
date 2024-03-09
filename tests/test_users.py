@@ -1,34 +1,34 @@
+from uuid import uuid4
+
 from fastapi.testclient import TestClient
 from pytest import fixture
+
 from src.turplanlegger.main import app
 from src.turplanlegger.sql.database import empty_table
 from src.turplanlegger.sql.models import User
-from uuid import uuid4
-from datetime import datetime
-from pprint import pprint
 
 client = TestClient(app)
 
 def GET_USER_PRIVATE():
     return {
-        "id": str(uuid4()),
-        "first_name": "Petter",
-        "last_name": "Smart",
-        "email": "petter@smart.no",
-        "auth_method": "basic",
-        "password": "test123",
-        "private": True
+        'id': str(uuid4()),
+        'first_name': 'Petter',
+        'last_name': 'Smart',
+        'email': 'petter@smart.no',
+        'auth_method': 'basic',
+        'password': 'test123',
+        'private': True
     }
 
 def GET_USER_PUBLIC():
     return {
-        "id": str(uuid4()),
-        "first_name": "Martin",
-        "last_name": "Harepus",
-        "email": "Martin@harehula.no",
-        "auth_method": "basic",
-        "password": "gulrot",
-        "private": False
+        'id': str(uuid4()),
+        'first_name': 'Martin',
+        'last_name': 'Harepus',
+        'email': 'Martin@harehula.no',
+        'auth_method': 'basic',
+        'password': 'gulrot',
+        'private': False
     }
 
 @fixture()

@@ -1,6 +1,5 @@
-import fastapi
 from fastapi import FastAPI
-from sqlmodel import SQLModel
+
 from .__about__ import __version__
 from .routers import helpers, users
 from .sql.database import init_db

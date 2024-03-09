@@ -1,19 +1,20 @@
+import uuid
+from datetime import UTC, datetime
 from typing import Optional
-from sqlmodel import Field, SQLModel
+
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import TEXT
-from datetime import datetime, UTC
-import uuid
+from sqlmodel import Field, SQLModel
 
 
 class User(SQLModel, table=True):
-  __tablename__ = "users"
+  __tablename__ = 'users'
   id: uuid.UUID = Field(
     default_factory=uuid.uuid4,
     primary_key=True,
     index=True,
     nullable=False,
-    description="ID of the user as UUID"
+    description='ID of the user as UUID'
   )
   first_name: str = Field(
     sa_column=Column(
