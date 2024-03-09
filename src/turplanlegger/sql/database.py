@@ -1,9 +1,10 @@
 
 from typing import Optional
 from sqlmodel import delete, SQLModel, Session, create_engine
+from os import environ
 
 
-DATABASE_URI = 'postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-fastapi'
+DATABASE_URI = environ.get('TP_DATABASE_URI','postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-fastapi')
 DEBUG = True
 
 engine = create_engine(DATABASE_URI, echo=DEBUG)
