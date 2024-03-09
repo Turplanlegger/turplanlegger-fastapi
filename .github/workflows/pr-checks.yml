@@ -31,9 +31,14 @@ jobs:
       - name: Lint using pre-commit
         run: |
           echo '```bash' >> $GITHUB_STEP_SUMMARY
-          hatch run lint >> $GITHUB_STEP_SUMMARY
+          hatch run type >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
+      - name: Type checking
+        run: |
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          hatch run lint >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
   test-postgres16:
     name: Test code using pytest-cov
