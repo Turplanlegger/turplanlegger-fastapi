@@ -34,6 +34,12 @@ jobs:
           hatch run lint >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
+      - name: Format code
+        run: |
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          hatch run format >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
 
   test-postgres16:
     name: Test code using pytest-cov
