@@ -1,5 +1,6 @@
+
 from typing import Optional
-from sqlmodel import SQLModel, Session, create_engine
+from sqlmodel import delete, SQLModel, Session, create_engine
 
 
 DATABASE_URI = 'postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-fastapi'
@@ -13,3 +14,9 @@ def init_db():
 def get_session():
     with Session(engine) as session:
         yield session
+
+def empty_table(model: str):
+    with Session(engine) as session:
+        statement = delete(model)
+        result = session.exec(statement)
+        session.commit()
