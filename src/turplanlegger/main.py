@@ -1,4 +1,3 @@
-import fastapi
 from fastapi import FastAPI
 from turplanlegger.__about__ import __version__
 from turplanlegger.routers import helpers
