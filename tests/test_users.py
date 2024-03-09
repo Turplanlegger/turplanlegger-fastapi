@@ -49,8 +49,6 @@ def test_create_private_user(clean_users_table):
     assert data['first_name'] == USER_PRIVATE.get('first_name')
     assert data['last_name'] == USER_PRIVATE.get('last_name')
     assert data['email'] == USER_PRIVATE.get('email')
-    # assert data['auth_method'] == USER_PRIVATE.get('auth_method')
-    # assert data['password'] == USER_PRIVATE.get('password')
     assert data['private'] == USER_PRIVATE.get('private')
     assert data['deleted'] is False
     assert data.get('delete_time') is None
@@ -67,8 +65,6 @@ def test_create_public_user(clean_users_table):
     assert data['first_name'] == USER_PUBLIC.get('first_name')
     assert data['last_name'] == USER_PUBLIC.get('last_name')
     assert data['email'] == USER_PUBLIC.get('email')
-    # assert data['auth_method'] == USER_PUBLIC.get('auth_method')
-    # assert data['password'] == USER_PUBLIC.get('password')
     assert data['private'] is USER_PUBLIC.get('private')
     assert data['deleted'] is False
     assert data.get('delete_time') is None
@@ -96,8 +92,6 @@ def test_get_all_users():
     assert data[0]['first_name'] == USER_PUBLIC.get('first_name')
     assert data[0]['last_name'] == USER_PUBLIC.get('last_name')
     assert data[0]['email'] == USER_PUBLIC.get('email')
-    # assert data[0]['auth_method'] == USER_PUBLIC.get('auth_method')
-    # assert data[0]['password'] == USER_PUBLIC.get('password')
     assert data[0]['private'] is USER_PUBLIC.get('private')
     assert data[0]['deleted'] is False
     assert data[0].get('delete_time') is None
@@ -106,8 +100,6 @@ def test_get_all_users():
     assert data[1]['first_name'] == USER_PRIVATE.get('first_name')
     assert data[1]['last_name'] == USER_PRIVATE.get('last_name')
     assert data[1]['email'] == USER_PRIVATE.get('email')
-    # assert data[1]['auth_method'] == USER_PRIVATE.get('auth_method')
-    # assert data[1]['password'] == USER_PRIVATE.get('password')
     assert data[1]['private'] is USER_PRIVATE.get('private')
     assert data[1]['deleted'] is False
     assert data[1].get('delete_time') is None
