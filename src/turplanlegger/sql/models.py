@@ -1,6 +1,8 @@
 from typing import Optional
 from sqlmodel import Field, SQLModel
-from datetime import datetime
+from sqlalchemy import Column
+from sqlalchemy.dialects.postgresql import TEXT
+from datetime import datetime, UTC
 import uuid
 
 
@@ -13,13 +15,26 @@ class User(SQLModel, table=True):
     nullable=False,
     description="ID of the user as UUID"
   )
-  first_name: str
-  last_name: str
-  email: str
-  auth_method: Optional[str] = Field(default='basic', nullable=True)
-  password: Optional[str] = Field(nullable=True)
+  first_name: str = Field(
+    sa_column=Column(
+      type_=TEXT,
+      nullable=False
+    )
+  )
+  last_name: str = Field(
+    sa_column=Column(
+      type_=TEXT,
+      nullable=False
+    )
+  )
+  email: str = Field(
+    sa_column=Column(
+      type_=TEXT,
+      nullable=False
+    )
+  )
   private: bool = False
-  create_time: datetime = datetime.utcnow()
+  create_time: datetime = datetime.now(UTC)
   deleted: Optional[bool] = False
   delete_time: Optional[datetime]
 
