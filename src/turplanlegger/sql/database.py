@@ -18,5 +18,5 @@ def get_session():
 def empty_table(model: str):
     with Session(engine) as session:
         statement = delete(model)
-        result = session.exec(statement)
+        session.exec(statement)
         session.commit()
