@@ -59,6 +59,7 @@ dependencies = [
 ]
 [tool.hatch.envs.default.scripts]
 lint = "ruff check"
+format = "ruff format --diff --no-cache"
 test = "pytest {args:tests}"
 test-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/turplanlegger {args:tests}"
 
@@ -95,7 +96,7 @@ exclude_lines = [
 packages = ["src/turplanlegger"]
 
 [tool.ruff]
-select = ["E", "W", "Q", "I", "F", "YTT", "C4", "T10", "ISC", "ICN", "RSE"]
+select = ["E", "W", "Q", "I", "F", "YTT", "C4", "T10", "ICN", "RSE"]
 line-length = 120
 target-version = "py312"
 
