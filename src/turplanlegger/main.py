@@ -1,7 +1,8 @@
-import fastapi
 from fastapi import FastAPI
-from turplanlegger.__about__ import __version__
-from turplanlegger.routers import helpers
+
+from .__about__ import __version__
+from .routers import helpers, users
+from .sql.database import init_db
 
 
 def create_app() -> FastAPI:
@@ -10,16 +11,13 @@ def create_app() -> FastAPI:
         description='Turplanlegger API',
         version=__version__,
     )
-    init_routers(app_=app_)
+
+    app_.include_router(helpers.router, prefix='/v1')
+    app_.include_router(users.router, prefix='/v1')
+
+    init_db()
 
     return app_
-
-
-def init_routers(app_: fastapi):
-    app_.include_router(
-        helpers.router,
-        prefix='/v1'
-    )
 
 
 app = create_app()

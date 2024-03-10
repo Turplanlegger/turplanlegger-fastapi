@@ -79,7 +79,7 @@ jobs:
 
       - name: Test with pytest
         env:
-          TP_DATABASE_URI: postgresql://postgres:postgres@localhost/turplanlegger?connect_timeout=10&application_name=turplanlegger-unittest
+          TP_DATABASE_URI: postgresql+psycopg://postgres:postgres@localhost/turplanlegger?connect_timeout=10&application_name=turplanlegger-unittest
         run: |
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           hatch run test-cov >> $GITHUB_STEP_SUMMARY
