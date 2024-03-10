@@ -7,6 +7,7 @@ router = APIRouter(
     responses={404: {'description': 'Not found'}},
 )
 
+
 @router.get('/', description='Nothing to see here')
 async def root():
     return {'message': 'Hello World'}

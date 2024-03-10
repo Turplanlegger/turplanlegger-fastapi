@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URI: str = Field(
         'postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-fastapi',
-        min_length=1
+        min_length=1,
     )
     DATABASE_MAX_RETRIES: int = Field(5)
     DATABASE_DEBUG: bool = Field(True)
@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list = Field(['http://localhost:3000'])
 
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8', env_prefix='TP_')
+
 
 @lru_cache
 def get_settings():

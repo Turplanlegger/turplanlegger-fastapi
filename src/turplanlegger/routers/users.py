@@ -10,6 +10,7 @@ router = APIRouter(
     responses={404: {'description': 'Not found'}},
 )
 
+
 @router.get('/', description='Get all users', response_model=list[User])
 async def all_users(session: Session = Depends(get_session)):
     result = session.exec(select(User))
@@ -22,9 +23,11 @@ async def all_users(session: Session = Depends(get_session)):
             private=user.private,
             create_time=user.create_time,
             deleted=user.deleted,
-            delete_time=user.delete_time
-        ) for user in result
+            delete_time=user.delete_time,
+        )
+        for user in result
     ]
+
 
 @router.post('/', description='Create a new user', response_model=User)
 def create_user(user: User, session: Session = Depends(get_session)):

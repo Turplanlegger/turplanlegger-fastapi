@@ -21,32 +21,14 @@ class User(SQLModel, table=True):
         create_time (datetime): Time of creation,
                                 Default: datetime.now()
     """
+
     __tablename__ = 'users'
     id: uuid.UUID = Field(
-    default_factory=uuid.uuid4,
-    primary_key=True,
-    index=True,
-    nullable=False,
-    description='ID of the user as UUID'
+        default_factory=uuid.uuid4, primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
     )
-    first_name: str = Field(
-    sa_column=Column(
-        type_=TEXT,
-        nullable=False
-    )
-    )
-    last_name: str = Field(
-    sa_column=Column(
-        type_=TEXT,
-        nullable=False
-    )
-    )
-    email: str = Field(
-    sa_column=Column(
-        type_=TEXT,
-        nullable=False
-    )
-    )
+    first_name: str = Field(sa_column=Column(type_=TEXT, nullable=False))
+    last_name: str = Field(sa_column=Column(type_=TEXT, nullable=False))
+    email: str = Field(sa_column=Column(type_=TEXT, nullable=False))
     private: bool = False
     create_time: datetime = datetime.now(UTC)
     deleted: Optional[bool] = False

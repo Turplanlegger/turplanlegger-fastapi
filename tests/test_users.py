@@ -9,6 +9,7 @@ from src.turplanlegger.sql.models import User
 
 client = TestClient(app)
 
+
 def GET_USER_PRIVATE():
     return {
         'id': str(uuid4()),
@@ -17,8 +18,9 @@ def GET_USER_PRIVATE():
         'email': 'petter@smart.no',
         'auth_method': 'basic',
         'password': 'test123',
-        'private': True
+        'private': True,
     }
+
 
 def GET_USER_PUBLIC():
     return {
@@ -28,8 +30,9 @@ def GET_USER_PUBLIC():
         'email': 'Martin@harehula.no',
         'auth_method': 'basic',
         'password': 'gulrot',
-        'private': False
+        'private': False,
     }
+
 
 @fixture()
 def clean_users_table():
@@ -39,10 +42,7 @@ def clean_users_table():
 
 def test_create_private_user(clean_users_table):
     USER_PRIVATE = GET_USER_PRIVATE()
-    response = client.post(
-        '/v1/users/',
-         json=USER_PRIVATE
-    )
+    response = client.post('/v1/users/', json=USER_PRIVATE)
     assert response.status_code == 200
     data = response.json()
     assert data['id'] == USER_PRIVATE.get('id')
@@ -53,12 +53,10 @@ def test_create_private_user(clean_users_table):
     assert data['deleted'] is False
     assert data.get('delete_time') is None
 
+
 def test_create_public_user(clean_users_table):
     USER_PUBLIC = GET_USER_PUBLIC()
-    response = client.post(
-        '/v1/users/',
-         json=USER_PUBLIC
-    )
+    response = client.post('/v1/users/', json=USER_PUBLIC)
     assert response.status_code == 200
     data = response.json()
     assert data['id'] == USER_PUBLIC.get('id')
@@ -72,16 +70,10 @@ def test_create_public_user(clean_users_table):
 
 def test_get_all_users():
     USER_PUBLIC = GET_USER_PUBLIC()
-    response = client.post(
-        '/v1/users/',
-         json=USER_PUBLIC
-    )
+    response = client.post('/v1/users/', json=USER_PUBLIC)
     assert response.status_code == 200
     USER_PRIVATE = GET_USER_PRIVATE()
-    response = client.post(
-        '/v1/users/',
-         json=USER_PRIVATE
-    )
+    response = client.post('/v1/users/', json=USER_PRIVATE)
     assert response.status_code == 200
 
     response = client.get('/v1/users/')
