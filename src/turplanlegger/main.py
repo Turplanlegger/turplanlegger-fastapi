@@ -17,5 +17,7 @@ def create_app() -> FastAPI:
 
     init_db()
 
+    return app_
+
 
 app = create_app()
