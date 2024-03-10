@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from turplanlegger.__about__ import __version__
+
+from ..__about__ import __version__
 
 router = APIRouter(
     tags=['helpers'],
@@ -12,7 +13,7 @@ async def root():
     return {'message': 'Hello World'}
 
 
-@router.get('/test', description='Returns OK if API is running')
+@router.get('/test', description='Test if the API replies')
 async def test():
     return {'status': 'ok'}
 

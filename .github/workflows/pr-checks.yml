@@ -6,7 +6,7 @@ on:
 
 jobs:
   lint-python:
-    name: Lint Code using pre-commit
+    name: Lint Code
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -28,17 +28,24 @@ jobs:
           pip install hatch
           pip install .[dev]
 
-      - name: Lint using pre-commit
+      - name: Lint
         run: |
           echo '```bash' >> $GITHUB_STEP_SUMMARY
-          hatch run type >> $GITHUB_STEP_SUMMARY
+          hatch run lint >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Type checking
         run: |
           echo '```bash' >> $GITHUB_STEP_SUMMARY
-          hatch run lint >> $GITHUB_STEP_SUMMARY
+          hatch run type >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Format code
+        run: |
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          hatch run format >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
 
   test-postgres16:
     name: Test code using pytest-cov
@@ -84,7 +91,7 @@ jobs:
 
       - name: Test with pytest
         env:
-          TP_DATABASE_URI: postgresql://postgres:postgres@localhost/turplanlegger?connect_timeout=10&application_name=turplanlegger-unittest
+          TP_DATABASE_URI: postgresql+psycopg://postgres:postgres@localhost/turplanlegger?connect_timeout=10&application_name=turplanlegger-unittest
         run: |
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           hatch run test-cov >> $GITHUB_STEP_SUMMARY
