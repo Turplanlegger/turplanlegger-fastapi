@@ -18,6 +18,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     # Database
+    # postgresql+psycopg tells SQLModel/SQLAlchemy to use psycopg(3) instead of psycopg2
     DATABASE_URI: str = Field(
         'postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-fastapi',
         min_length=1,
