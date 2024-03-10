@@ -32,7 +32,7 @@ dependencies = [
 ]
 [project.optional-dependencies]
 dev = [
-  "hatch==1.9.2",
+  "hatch==1.9.3",
   "pytest==7.4.4",
   "pytest-cov==4.1.0",
   "ruff==v0.1.14",
