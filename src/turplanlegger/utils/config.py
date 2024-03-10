@@ -18,8 +18,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     # Database
-    DATABASE_URI: str = Field(min_length=1)
+    DATABASE_URI: str = Field(
+        'postgresql+psycopg://turadm:passord@localhost:5432/turplanlegger?connect_timeout=10&application_name=turplanlegger-fastapi',
+        min_length=1
+    )
     DATABASE_MAX_RETRIES: int = Field(5)
+    DATABASE_DEBUG: bool = Field(True)
 
     # CORS
     CORS_ORIGINS: list = Field(['http://localhost:3000'])
