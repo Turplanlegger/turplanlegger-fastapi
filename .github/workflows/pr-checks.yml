@@ -6,7 +6,7 @@ on:
 
 jobs:
   lint-python:
-    name: Lint Code using pre-commit
+    name: Lint Code
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -28,7 +28,7 @@ jobs:
           pip install hatch
           pip install .[dev]
 
-      - name: Lint using pre-commit
+      - name: Lint
         run: |
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           hatch run lint >> $GITHUB_STEP_SUMMARY

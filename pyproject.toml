@@ -33,7 +33,6 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "hatch==1.9.2",
-  "pre-commit==3.6.0",
   "pytest==7.4.4",
   "pytest-cov==4.1.0",
   "ruff==v0.1.14",
@@ -59,7 +58,7 @@ dependencies = [
   "httpx==0.26.0",
 ]
 [tool.hatch.envs.default.scripts]
-lint = "pre-commit run -a --show-diff-on-failure"
+lint = "ruff check"
 test = "pytest {args:tests}"
 test-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/turplanlegger {args:tests}"
 
