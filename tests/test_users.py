@@ -67,7 +67,7 @@ def test_create_public_user(clean_users_table):
     assert data.get('delete_time') is None
 
 
-def test_get_all_users():
+def test_get_all_users(clean_users_table):
     USER_PUBLIC = GET_USER_PUBLIC()
     response = client.post('/v1/users/', json=USER_PUBLIC)
     assert response.status_code == 200
@@ -94,3 +94,27 @@ def test_get_all_users():
     assert data[1]['private'] is USER_PRIVATE.get('private')
     assert data[1]['deleted'] is False
     assert data[1].get('delete_time') is None
+
+
+def test_delete_user(clean_users_table):
+    USER_PUBLIC = GET_USER_PUBLIC()
+    response = client.post('/v1/users/', json=USER_PUBLIC)
+    assert response.status_code == 200
+    USER_PRIVATE = GET_USER_PRIVATE()
+    response = client.post('/v1/users/', json=USER_PRIVATE)
+    assert response.status_code == 200
+
+    response = client.delete(f"/v1/users/{USER_PRIVATE.get('id')}")
+    assert response.status_code == 200
+
+    response = client.get('/v1/users/')
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data[0]['id'] == USER_PUBLIC.get('id')
+    assert data[0]['first_name'] == USER_PUBLIC.get('first_name')
+    assert data[0]['last_name'] == USER_PUBLIC.get('last_name')
+    assert data[0]['email'] == USER_PUBLIC.get('email')
+    assert data[0]['private'] is USER_PUBLIC.get('private')
+    assert data[0]['deleted'] is False
+    assert data[0].get('delete_time') is None
