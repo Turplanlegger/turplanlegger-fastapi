@@ -1,5 +1,4 @@
-from sqlmodel import Session, SQLModel, create_engine, delete, select
-from sqlalchemy.engine.result import ScalarResult
+from sqlmodel import Session, SQLModel, create_engine, select
 from turplanlegger.utils.config import get_settings
 
 config = get_settings()
