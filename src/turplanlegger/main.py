@@ -20,8 +20,8 @@ def create_app() -> FastAPI:
         CORSMiddleware,
         allow_origins=config.CORS_ORIGINS,
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=['*'],
+        allow_headers=['*'],
     )
 
     app_.include_router(helpers.router, prefix='/v1')
