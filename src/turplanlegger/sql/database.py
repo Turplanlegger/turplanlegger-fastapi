@@ -1,4 +1,4 @@
-from sqlmodel import Session, SQLModel, create_engine, select
+from sqlmodel import Session, SQLModel, create_engine
 from turplanlegger.utils.config import get_settings
 
 config = get_settings()
@@ -15,10 +15,3 @@ def init_db():
 def get_session():
     with Session(engine) as session:
         yield session
-
-
-def empty_table(model: type) -> None:
-    with Session(engine) as session:
-        result = session.exec(select(model)) # type: ScalarResult
-        session.delete(result)
-        session.commit()
