@@ -4,8 +4,7 @@ from fastapi.testclient import TestClient
 from pytest import fixture
 
 from src.turplanlegger.main import app
-from src.turplanlegger.sql.database import empty_table
-from src.turplanlegger.sql.models import User
+from src.turplanlegger.sql.crud import delete_all_users
 
 client = TestClient(app)
 
@@ -37,7 +36,7 @@ def GET_USER_PUBLIC():
 @fixture()
 def clean_users_table():
     yield
-    empty_table(User)
+    delete_all_users()
 
 
 def test_create_private_user(clean_users_table):
