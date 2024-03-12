@@ -1,4 +1,5 @@
-from sqlmodel import Session, SQLModel, create_engine, delete
+from sqlmodel import Session, SQLModel, create_engine, delete, select
+from sqlalchemy.engine.result import ScalarResult
 from turplanlegger.utils.config import get_settings
 
 config = get_settings()
@@ -19,6 +20,6 @@ def get_session():
 
 def empty_table(model: type) -> None:
     with Session(engine) as session:
-        statement = delete(model)
-        session.exec(statement)
+        result = session.exec(select(model)) # type: ScalarResult
+        session.delete(result)
         session.commit()
