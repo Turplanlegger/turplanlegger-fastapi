@@ -33,6 +33,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "hatch==1.9.2",
+  "mypy==1.9.0",
   "pytest==7.4.4",
   "pytest-cov==4.1.0",
   "ruff==v0.1.14",
@@ -51,27 +52,15 @@ Source = "https://github.com/Turplanlegger/turplanlegger-fastapi"
 [tool.hatch.version]
 path = "src/turplanlegger/__about__.py"
 
-[tool.hatch.envs.default]
-dependencies = [
-  "pytest==7.4.4",
-  "pytest-cov==4.1.0",
-  "httpx==0.26.0",
-]
 [tool.hatch.envs.default.scripts]
 lint = "ruff check"
 format = "ruff format --diff --no-cache"
 test = "pytest {args:tests}"
+type = "mypy --install-types --non-interactive {args:src/turplanlegger tests}"
 test-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/turplanlegger {args:tests}"
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.10", "3.11", "3.12"]
-
-[tool.hatch.envs.types]
-dependencies = [
-  "mypy>=1.0.0",
-]
-[tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/turplanlegger tests}"
 
 [tool.coverage.run]
 source_pkgs = ["turplanlegger", "tests"]
