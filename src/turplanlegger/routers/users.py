@@ -35,9 +35,8 @@ def create_user(user: User, session: Session = Depends(get_session)):
     db_user = crud.get_user_by_email(session, email=user.email)
     if db_user is not None:
         raise HTTPException(status_code=400, detail='User exists')
-    session.add(user)
-    session.commit()
-    session.refresh(user)
+
+    crud.create_user(db=session, user=user)
     return user
 
 

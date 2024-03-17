@@ -20,5 +20,10 @@ def get_user_by_email(db: Session, email: str):
     return db.exec(statement).one_or_none()
 
 
+def create_user(db: Session, user: User):
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
 def delete_user(db: Session, user: User):
     db.delete(user)
