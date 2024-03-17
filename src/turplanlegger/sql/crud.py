@@ -2,6 +2,7 @@ from sqlmodel import Session, delete, select
 
 from .database import engine
 from .models import User
+from .schemas import UserUpdate
 
 
 def delete_all_users():
@@ -28,3 +29,18 @@ def create_user(db: Session, user: User):
 def delete_user(db: Session, user: User):
     db.delete(user)
     db.commit()
+
+def update_user(db: Session, db_user: User, user_updates: UserUpdate):
+    updated = False
+
+    for attr_name, attr_value in user_updates.__dict__.items():
+        if attr_value is not None and getattr(db_user, attr_name) != attr_value:
+            setattr(db_user, attr_name, attr_value)
+            updated = True
+
+    if updated is True:
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+
+    return db_user

@@ -129,3 +129,30 @@ def test_delete_user(clean_users_table):
     assert data[0]['private'] is USER_PUBLIC.get('private')
     assert data[0]['deleted'] is False
     assert data[0].get('delete_time') is None
+
+
+def test_update_user(clean_users_table):
+    USER_PUBLIC = GET_USER_PUBLIC()
+    response = client.post('/v1/users/', json=USER_PUBLIC)
+    assert response.status_code == 200
+
+    response = client.put(
+        f"/v1/users/{USER_PUBLIC.get('id')}",
+        json={
+            'first_name': 'Martin',
+            'last_name': 'Haremann',
+            'email': None, # Not updated
+            'private': None # Not updated
+        }
+    )
+    assert response.status_code == 200
+    data = response.json()
+
+
+    assert data['id'] == USER_PUBLIC.get('id')
+    assert data['first_name'] == USER_PUBLIC.get('first_name')
+    assert data['last_name'] == 'Haremann'
+    assert data['email'] == USER_PUBLIC.get('email')
+    assert data['private'] is USER_PUBLIC.get('private')
+    assert data['deleted'] is False
+    assert data.get('delete_time') is None

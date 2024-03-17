@@ -4,6 +4,7 @@ from sqlmodel import Session, select
 from ..sql import crud
 from ..sql.database import get_session
 from ..sql.models import User
+from ..sql.schemas import UserUpdate
 
 router = APIRouter(
     tags=['users'],
@@ -49,3 +50,13 @@ def delete_user(user_id: str, session: Session = Depends(get_session)):
     crud.delete_user(session, db_user)
 
     return {'status': 'ok'}
+
+@router.put('/{user_id}', description='Update user by id', response_model=User)
+def update_user(user_id: str, user_updates: UserUpdate, session: Session = Depends(get_session)):
+    db_user = crud.get_user(session, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail='User not found')
+
+    updated_user = crud.update_user(session, db_user, user_updates)
+
+    return updated_user
