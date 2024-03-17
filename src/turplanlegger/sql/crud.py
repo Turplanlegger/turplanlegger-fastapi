@@ -27,3 +27,4 @@ def create_user(db: Session, user: User):
 
 def delete_user(db: Session, user: User):
     db.delete(user)
+    db.commit()

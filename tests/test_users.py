@@ -121,6 +121,7 @@ def test_delete_user(clean_users_table):
     assert response.status_code == 200
     data = response.json()
 
+    assert len(data) == 1
     assert data[0]['id'] == USER_PUBLIC.get('id')
     assert data[0]['first_name'] == USER_PUBLIC.get('first_name')
     assert data[0]['last_name'] == USER_PUBLIC.get('last_name')
