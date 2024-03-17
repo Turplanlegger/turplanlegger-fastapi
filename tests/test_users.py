@@ -173,3 +173,25 @@ def test_get_user(clean_users_table):
     assert data['private'] == USER_PRIVATE.get('private')
     assert data['deleted'] is False
     assert data.get('delete_time') is None
+
+
+def test_query_user(clean_users_table):
+    USER_PRIVATE = GET_USER_PRIVATE()
+    response = client.post('/v1/users/', json=USER_PRIVATE)
+    assert response.status_code == 200
+
+    response = client.get(f"/v1/users/query/?email={USER_PRIVATE.get('email')}")
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert data['id'] == USER_PRIVATE.get('id')
+    assert data['first_name'] == USER_PRIVATE.get('first_name')
+    assert data['last_name'] == USER_PRIVATE.get('last_name')
+    assert data['email'] == USER_PRIVATE.get('email')
+    assert data['private'] == USER_PRIVATE.get('private')
+    assert data['deleted'] is False
+    assert data.get('delete_time') is None
+
+    response = client.get('/v1/users/query/?email=i_will_fail')
+    assert response.status_code == 404
