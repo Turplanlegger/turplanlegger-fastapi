@@ -16,7 +16,6 @@ def GET_USER_PRIVATE():
         'last_name': 'Smart',
         'email': 'petter@smart.no',
         'auth_method': 'basic',
-        'password': 'test123',
         'private': True,
     }
 
@@ -28,7 +27,6 @@ def GET_USER_PUBLIC():
         'last_name': 'Harepus',
         'email': 'Martin@harehula.no',
         'auth_method': 'basic',
-        'password': 'gulrot',
         'private': False,
     }
 
