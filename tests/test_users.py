@@ -66,6 +66,7 @@ def test_create_public_user(clean_users_table):
     assert data['deleted'] is False
     assert data.get('delete_time') is None
 
+
 def test_create_duplicate_user(clean_users_table):
     USER_PRIVATE = GET_USER_PRIVATE()
     response = client.post('/v1/users/', json=USER_PRIVATE)
@@ -141,13 +142,12 @@ def test_update_user(clean_users_table):
         json={
             'first_name': 'Martin',
             'last_name': 'Haremann',
-            'email': None, # Not updated
-            'private': None # Not updated
-        }
+            'email': None,  # Not updated
+            'private': None,  # Not updated
+        },
     )
     assert response.status_code == 200
     data = response.json()
-
 
     assert data['id'] == USER_PUBLIC.get('id')
     assert data['first_name'] == USER_PUBLIC.get('first_name')

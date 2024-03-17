@@ -16,6 +16,7 @@ def get_user(db: Session, user_id: str):
     statement = select(User).where(User.id == user_id)
     return db.exec(statement).one_or_none()
 
+
 def get_user_by_email(db: Session, email: str):
     statement = select(User).where(User.email == email)
     return db.exec(statement).one_or_none()
@@ -26,9 +27,11 @@ def create_user(db: Session, user: User):
     db.commit()
     db.refresh(user)
 
+
 def delete_user(db: Session, user: User):
     db.delete(user)
     db.commit()
+
 
 def update_user(db: Session, db_user: User, user_updates: UserUpdate):
     updated = False

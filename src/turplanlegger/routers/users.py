@@ -51,6 +51,7 @@ def delete_user(user_id: str, session: Session = Depends(get_session)):
 
     return {'status': 'ok'}
 
+
 @router.put('/{user_id}', description='Update user by id', response_model=User)
 def update_user(user_id: str, user_updates: UserUpdate, session: Session = Depends(get_session)):
     db_user = crud.get_user(session, user_id=user_id)
