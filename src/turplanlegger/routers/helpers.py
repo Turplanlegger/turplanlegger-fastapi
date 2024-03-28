@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from ..exception import ApiProblem
 
 from ..__about__ import __version__
 
@@ -10,6 +11,12 @@ router = APIRouter(
 
 @router.get('/', description='Nothing to see here')
 async def root():
+    raise ApiProblem(
+        title='Title',
+        detail='detail',
+        status=500,
+        instance='/'
+    )
     return {'message': 'Hello World'}
 
 

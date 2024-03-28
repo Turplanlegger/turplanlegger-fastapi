@@ -36,3 +36,9 @@ def create_user(user: User, session: Session = Depends(get_session)):
     session.commit()
     session.refresh(user)
     return user
+
+
+@router.get('/test/{user_id}', description='Get user', response_model=User)
+def get_user(user_id: str, session: Session = Depends(get_session)):
+    user = User()
+    return user
