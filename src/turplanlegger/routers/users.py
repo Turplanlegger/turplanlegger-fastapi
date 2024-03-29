@@ -12,22 +12,10 @@ router = APIRouter(
 )
 
 
-@router.get('/', description='Get all users', response_model=list[User])
+@router.get('/', description='Get all users', response_model=list[UserRead])
 def all_users(session: Session = Depends(get_session)):
-    result = session.exec(select(User))
-    return [
-        User(
-            id=user.id,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            email=user.email,
-            private=user.private,
-            create_time=user.create_time,
-            deleted=user.deleted,
-            delete_time=user.delete_time,
-        )
-        for user in result
-    ]
+    users = session.exec(select(User)).all()
+    return users
 
 
 @router.post('/', description='Create a new user', response_model=UserRead)
