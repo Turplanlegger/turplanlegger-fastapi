@@ -3,8 +3,7 @@ from sqlmodel import Session, select
 
 from ..sql import crud
 from ..sql.database import get_session
-from ..sql.models import User, UserCreate, UserRead
-from ..sql.schemas import UserUpdate
+from ..sql.models import User, UserCreate, UserRead, UserUpdate
 
 router = APIRouter(
     tags=['users'],
