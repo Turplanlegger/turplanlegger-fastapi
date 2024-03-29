@@ -10,14 +10,13 @@ from sqlmodel import Field, SQLModel
 
 class UserBase(SQLModel, table=False):
     """User base SQLModel
-    This class is used for validation.
+    Non-table User base SQLModel
     Attributes:
-        id (str): UUID of the user
-        name (str): First name of the user
+        first_name (str): First name of the user
         last_name (str): Last name/sir name of the user
         email (str): Email of the user
         private (bool): Flag if the user should be private or public
-                        Default: False
+                        Default: True
         deleted (bool): Flag if the user has logically been deleted
         delete_time (datetime): Time of the deletion of the user
         create_time (datetime): Time of creation,
@@ -28,13 +27,21 @@ class UserBase(SQLModel, table=False):
     last_name: str = Field(sa_column=Column(type_=TEXT, nullable=False))
     email: str = Field(sa_column=Column(type_=TEXT, nullable=False))
     private: bool = Field(
-        default=False, sa_column=Column(type_=BOOLEAN, default=False, server_default=false(), nullable=False)
+        default=True, sa_column=Column(type_=BOOLEAN, default=True, server_default=false(), nullable=False)
     )
 
 
 class User(UserBase, table=True):
-    """User table SQLModel
-    This class is for SQLAlchemy
+    """User SQLModel
+    Table User class with inheritance from UserBase
+
+    Attributes:
+        id (UUID): UUID of the user
+        create_time (datetime): Time of creation,
+                                Default: datetime.now(UTC)
+        deleted (bool): Flag if the user has logically been deleted
+                        Default: False
+        delete_time (datetime): Time of the deletion of the user
     """
 
     __tablename__ = 'users'
@@ -54,8 +61,13 @@ class User(UserBase, table=True):
 
 
 class UserCreate(UserBase, table=False):
-    """User table SQLModel
-    This class is when creating a new user
+    """User create SQLModel
+    Non-table User class with inheritance from UserBase.
+    To be used when creating a new User
+
+    Attributes:
+        id (UUID): UUID of the user
+                   Default: uuid.uuid4()
     """
 
     id: uuid.UUID = Field(
@@ -64,8 +76,15 @@ class UserCreate(UserBase, table=False):
 
 
 class UserRead(UserBase, table=False):
-    """User table SQLModel
-    This class is when creating a new user
+    """User read SQLModel
+    Non-table User class with inheritance from UserBase.
+    To be used when retrieving an existing User
+
+    Attributes:
+        id (UUID): UUID of the user
+        create_time (datetime): Time of creation
+        deleted (bool): Flag if the user has logically been deleted
+        delete_time (datetime): Optional. Time of the deletion of the user
     """
 
     id: uuid.UUID
@@ -75,10 +94,22 @@ class UserRead(UserBase, table=False):
 
 
 class UserUpdate(UserBase, table=False):
+    """User update SQLModel
+    Non-table User class with inheritance from UserBase.
+    To be used when updating an existing User
+
+    Attributes:
+        first_name (str): Optional. First name of the user
+        last_name (str): Optional. Last name/sir name of the user
+        email (str): Optional. Email of the user
+        private (bool): Optional. Flag if the user should be private or public
+                        Default: True
+    """
+
     first_name: Optional[str]
     last_name: Optional[str]
     email: Optional[str]  # Should this be updateable?
-    private: Optional[bool]
+    private: Optional[bool] = True
 
 
 # class Routes(SQLModel, table=True):
