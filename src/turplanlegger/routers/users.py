@@ -3,7 +3,7 @@ from sqlmodel import Session, select
 
 from ..sql import crud
 from ..sql.database import get_session
-from ..sql.models import User
+from ..sql.models import User, UserCreate, UserRead
 from ..sql.schemas import UserUpdate
 
 router = APIRouter(
@@ -31,14 +31,14 @@ def all_users(session: Session = Depends(get_session)):
     ]
 
 
-@router.post('/', description='Create a new user', response_model=User)
-def create_user(user: User, session: Session = Depends(get_session)):
+@router.post('/', description='Create a new user', response_model=UserRead)
+def create_user(user: UserCreate, session: Session = Depends(get_session)):
     db_user = crud.get_user_by_email(session, email=user.email)
     if db_user is not None:
         raise HTTPException(status_code=400, detail='User exists')
 
-    crud.create_user(db=session, user=user)
-    return user
+    db_user = crud.create_user(db=session, user=user)
+    return db_user
 
 
 @router.get('/{user_id}', description='Get user by id', response_model=User)

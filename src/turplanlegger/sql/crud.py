@@ -1,8 +1,7 @@
 from sqlmodel import Session, delete, select
 
 from .database import engine
-from .models import User
-from .schemas import UserUpdate
+from .models import User, UserCreate, UserUpdate
 
 
 def delete_all_users():
@@ -22,10 +21,12 @@ def get_user_by_email(db: Session, email: str):
     return db.exec(statement).one_or_none()
 
 
-def create_user(db: Session, user: User):
-    db.add(user)
+def create_user(db: Session, user: UserCreate):
+    db_user = User.model_validate(user)
+    db.add(db_user)
     db.commit()
-    db.refresh(user)
+    db.refresh(db_user)
+    return db_user
 
 
 def delete_user(db: Session, user: User):

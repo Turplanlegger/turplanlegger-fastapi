@@ -2,13 +2,15 @@ import uuid
 from datetime import UTC, datetime
 from typing import Optional
 
-from sqlalchemy import Column
-from sqlalchemy.dialects.postgresql import TEXT
+from sqlalchemy import Column, DateTime, func
+from sqlalchemy.dialects.postgresql import BOOLEAN, TEXT
+from sqlalchemy.sql import false
 from sqlmodel import Field, SQLModel
 
 
-class User(SQLModel, table=True):
-    """User SQLModel
+class UserBase(SQLModel, table=False):
+    """User base SQLModel
+    This class is used for validation.
     Attributes:
         id (str): UUID of the user
         name (str): First name of the user
@@ -22,17 +24,61 @@ class User(SQLModel, table=True):
                                 Default: datetime.now()
     """
 
-    __tablename__ = 'users'
-    id: uuid.UUID = Field(
-        default_factory=uuid.uuid4, primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
-    )
     first_name: str = Field(sa_column=Column(type_=TEXT, nullable=False))
     last_name: str = Field(sa_column=Column(type_=TEXT, nullable=False))
     email: str = Field(sa_column=Column(type_=TEXT, nullable=False))
-    private: bool = False
-    create_time: datetime = datetime.now(UTC)
-    deleted: Optional[bool] = False
+    private: bool = Field(
+        default=False, sa_column=Column(type_=BOOLEAN, default=False, server_default=false(), nullable=False)
+    )
+
+
+class User(UserBase, table=True):
+    """User table SQLModel
+    This class is for SQLAlchemy
+    """
+
+    __tablename__ = 'users'
+    id: uuid.UUID = Field(
+        default=uuid.uuid4(), primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
+    )
+    create_time: datetime = Field(
+        default=datetime.now(UTC),
+        sa_column=Column(
+            type_=DateTime, default=datetime.now(UTC), server_default=func.current_timestamp(), nullable=False
+        ),
+    )
+    deleted: bool = Field(
+        default=False, sa_column=Column(type_=BOOLEAN, default=False, server_default=false(), nullable=False)
+    )
+    delete_time: datetime | None = Field(default=None)
+
+
+class UserCreate(UserBase, table=False):
+    """User table SQLModel
+    This class is when creating a new user
+    """
+
+    id: uuid.UUID = Field(
+        default=uuid.uuid4(), primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
+    )
+
+
+class UserRead(UserBase, table=False):
+    """User table SQLModel
+    This class is when creating a new user
+    """
+
+    id: uuid.UUID
+    create_time: datetime
+    deleted: bool
     delete_time: Optional[datetime]
+
+
+class UserUpdate(UserBase, table=False):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    email: Optional[str]  # Should this be updateable?
+    private: Optional[bool]
 
 
 # class Routes(SQLModel, table=True):
