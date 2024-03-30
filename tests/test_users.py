@@ -133,7 +133,7 @@ def test_delete_user(clean_users_table):
     assert response.status_code == 200
 
     response = client.delete(f"/v1/users/{USER_PRIVATE.get('id')}")
-    assert response.status_code == 200
+    assert response.status_code == 204
 
     response = client.get('/v1/users/')
     assert response.status_code == 200
