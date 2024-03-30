@@ -13,6 +13,11 @@ def delete_all_users():
         session.commit()
 
 
+def get_all_users(db: Session) -> list[UserRead]:
+    statement = select(User)
+    return db.exec(statement).all()
+
+
 def get_user(db: Session, user_id: UUID):
     statement = select(User).where(User.id == user_id)
     return db.exec(statement).one_or_none()

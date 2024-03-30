@@ -2,11 +2,11 @@ from http import HTTPStatus
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Response
-from sqlmodel import Session, select
+from sqlmodel import Session
 
 from ..sql import crud
 from ..sql.database import get_session
-from ..sql.models import User, UserCreate, UserRead, UserUpdate
+from ..sql.models import UserCreate, UserRead, UserUpdate
 
 router = APIRouter(
     tags=['users'],
@@ -15,10 +15,12 @@ router = APIRouter(
 )
 
 
-@router.get('/', description='Get all users', response_model=list[UserRead])
-def all_users(session: Session = Depends(get_session)):
-    users = session.exec(select(User)).all()
-    return users
+@router.get('/', description='Get all users')
+def all_users(session: Session = Depends(get_session)) -> list[UserRead]:
+    db_users = crud.get_all_users(session)
+    if not db_users:
+        raise HTTPException(status_code=404, detail='No users found')
+    return db_users
 
 
 @router.post('/', description='Create a new user', response_model=UserRead)
