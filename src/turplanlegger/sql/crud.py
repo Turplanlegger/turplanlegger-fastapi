@@ -1,8 +1,9 @@
-from sqlmodel import Session, delete, select
 from uuid import UUID
 
+from sqlmodel import Session, delete, select
+
 from .database import engine
-from .models import User, UserCreate, UserUpdate
+from .models import User, UserCreate, UserRead, UserUpdate
 
 
 def delete_all_users():
@@ -35,7 +36,7 @@ def delete_user(db: Session, user: User):
     db.commit()
 
 
-def update_user(db: Session, db_user: User, user_updates: UserUpdate):
+def update_user(db: Session, db_user: User, user_updates: UserUpdate) -> UserRead:
     updated = False
 
     for attr_name, attr_value in user_updates.__dict__.items():

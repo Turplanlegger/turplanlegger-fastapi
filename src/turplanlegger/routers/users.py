@@ -58,8 +58,8 @@ def delete_user(user_id: UUID, session: Session = Depends(get_session)):
     return Response(status_code=HTTPStatus.NO_CONTENT.value)
 
 
-@router.put('/{user_id}', description='Update user by id', response_model=User)
-def update_user(user_id: str, user_updates: UserUpdate, session: Session = Depends(get_session)):
+@router.put('/{user_id}', description='Update user by id')
+def update_user(user_id: UUID, user_updates: UserUpdate, session: Session = Depends(get_session)) -> UserRead:
     db_user = crud.get_user(session, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail='User not found')
