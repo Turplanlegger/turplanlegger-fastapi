@@ -6,7 +6,7 @@ from .database import engine
 from .models import User, UserCreate, UserRead, UserUpdate
 
 
-def delete_all_users():
+def delete_all_users() -> None:
     with Session(engine) as session:
         statement = delete(User)
         session.exec(statement)
@@ -18,17 +18,17 @@ def get_all_users(db: Session) -> list[UserRead]:
     return db.exec(statement).all()
 
 
-def get_user(db: Session, user_id: UUID):
+def get_user(db: Session, user_id: UUID) -> UserRead:
     statement = select(User).where(User.id == user_id)
     return db.exec(statement).one_or_none()
 
 
-def get_user_by_email(db: Session, email: str):
+def get_user_by_email(db: Session, email: str) -> UserRead:
     statement = select(User).where(User.email == email)
     return db.exec(statement).one_or_none()
 
 
-def create_user(db: Session, user: UserCreate):
+def create_user(db: Session, user: UserCreate) -> UserRead:
     db_user = User.model_validate(user)
     db.add(db_user)
     db.commit()
@@ -36,7 +36,7 @@ def create_user(db: Session, user: UserCreate):
     return db_user
 
 
-def delete_user(db: Session, user: User):
+def delete_user(db: Session, user: User) -> None:
     db.delete(user)
     db.commit()
 
