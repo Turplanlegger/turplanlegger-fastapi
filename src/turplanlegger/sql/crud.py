@@ -1,4 +1,5 @@
 from sqlmodel import Session, delete, select
+from uuid import UUID
 
 from .database import engine
 from .models import User, UserCreate, UserUpdate
@@ -11,7 +12,7 @@ def delete_all_users():
         session.commit()
 
 
-def get_user(db: Session, user_id: str):
+def get_user(db: Session, user_id: UUID):
     statement = select(User).where(User.id == user_id)
     return db.exec(statement).one_or_none()
 
