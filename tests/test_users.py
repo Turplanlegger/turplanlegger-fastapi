@@ -40,6 +40,7 @@ def clean_users_table():
 def test_create_private_user(clean_users_table):
     USER_PRIVATE = GET_USER_PRIVATE()
     response = client.post('/v1/users/', json=USER_PRIVATE)
+
     assert response.status_code == 200
     data = response.json()
     assert data['id'] == USER_PRIVATE.get('id')
@@ -49,6 +50,24 @@ def test_create_private_user(clean_users_table):
     assert data['private'] == USER_PRIVATE.get('private')
     assert data['deleted'] is False
     assert data.get('delete_time') is None
+
+
+def test_create_user_no_name(clean_users_table):
+    USER_PRIVATE = GET_USER_PRIVATE()
+    USER_PRIVATE.pop('first_name')
+
+    response = client.post('/v1/users/', json=USER_PRIVATE)
+
+    assert response.status_code == 422
+
+
+def test_create_user_wrong_id_type(clean_users_table):
+    USER_PRIVATE = GET_USER_PRIVATE()
+    USER_PRIVATE['id'] = 1
+
+    response = client.post('/v1/users/', json=USER_PRIVATE)
+
+    assert response.status_code == 422
 
 
 def test_create_public_user(clean_users_table):
