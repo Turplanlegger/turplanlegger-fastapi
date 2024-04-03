@@ -9,7 +9,7 @@ from .models import User, UserCreate, UserRead, UserUpdate
 def delete_all_users() -> None:
     with Session(engine) as session:
         statement = delete(User)
-        session.exec(statement)
+        session.exec(statement)  # type: ignore [call-overload]
         session.commit()
 
 
