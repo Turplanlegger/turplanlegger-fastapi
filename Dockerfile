@@ -9,7 +9,7 @@ COPY . .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir .[prod]
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=5 CMD [ "curl", "-fs", "http://localhost:4000/test"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=5 CMD [ "curl", "-fs", "http://localhost:4000/v1/test"]
 
 EXPOSE 4000
 
