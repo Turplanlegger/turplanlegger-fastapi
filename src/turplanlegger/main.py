@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.turplanlegger.utils.config import get_settings
-
+from .utils.config import get_settings
 from .__about__ import __version__
 from .routers import helpers, users
 from .sql.database import init_db
