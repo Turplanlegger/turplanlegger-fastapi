@@ -3,7 +3,7 @@ version: '3.9'
 services:
   dev-api:
     environment:
-      - TP_DATABASE_URI=${TP_DATABASE_URI:-postgresql://turadm:passord@turplanlegger-db/turplanlegger?connect_timeout=10&application_name=turplanlegger-api}
+      - TP_DATABASE_URI=${TP_DATABASE_URI:-postgresql+psycopg://turadm:passord@turplanlegger-dev-db/turplanlegger?connect_timeout=10&application_name=turplanlegger-api}
     build:
       context: .
     hostname: turplanlegger-dev-api
