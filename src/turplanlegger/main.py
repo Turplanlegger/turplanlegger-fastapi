@@ -8,6 +8,7 @@ from .utils.config import get_settings
 
 config = get_settings()
 
+
 def create_app() -> FastAPI:
     app_ = FastAPI(
         title='Turplanlegger',
