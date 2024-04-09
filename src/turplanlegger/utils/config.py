@@ -24,7 +24,7 @@ class Settings(BaseSettings):
         min_length=1,
     )
     DATABASE_MAX_RETRIES: int = Field(5)
-    DATABASE_DEBUG: bool = Field(True)
+    DATABASE_DEBUG: bool = Field(False)
 
     # CORS
     CORS_ORIGINS: list = Field(['http://localhost:3000'])
