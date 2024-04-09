@@ -2,37 +2,113 @@ import uuid
 from datetime import UTC, datetime
 from typing import Optional
 
-from sqlalchemy import Column
-from sqlalchemy.dialects.postgresql import TEXT
+from pydantic import BaseModel
+from sqlalchemy import Column, DateTime, func
+from sqlalchemy.dialects.postgresql import BOOLEAN, TEXT
+from sqlalchemy.sql import false
 from sqlmodel import Field, SQLModel
 
 
-class User(SQLModel, table=True):
-    """User SQLModel
+class UserBase(SQLModel, table=False):
+    """User base SQLModel
+    Non-table User base SQLModel
     Attributes:
-        id (str): UUID of the user
-        name (str): First name of the user
+        first_name (str): First name of the user
         last_name (str): Last name/sir name of the user
         email (str): Email of the user
         private (bool): Flag if the user should be private or public
-                        Default: False
+                        Default: True
         deleted (bool): Flag if the user has logically been deleted
         delete_time (datetime): Time of the deletion of the user
         create_time (datetime): Time of creation,
                                 Default: datetime.now()
     """
 
-    __tablename__ = 'users'
-    id: uuid.UUID = Field(
-        default_factory=uuid.uuid4, primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
-    )
     first_name: str = Field(sa_column=Column(type_=TEXT, nullable=False))
     last_name: str = Field(sa_column=Column(type_=TEXT, nullable=False))
     email: str = Field(sa_column=Column(type_=TEXT, nullable=False))
-    private: bool = False
-    create_time: datetime = datetime.now(UTC)
-    deleted: Optional[bool] = False
+    private: bool = Field(
+        default=True, sa_column=Column(type_=BOOLEAN, default=True, server_default=false(), nullable=False)
+    )
+
+
+class User(UserBase, table=True):
+    """User SQLModel
+    Table User class with inheritance from UserBase
+
+    Attributes:
+        id (UUID): UUID of the user
+        create_time (datetime): Time of creation,
+                                Default: datetime.now(UTC)
+        deleted (bool): Flag if the user has logically been deleted
+                        Default: False
+        delete_time (datetime): Time of the deletion of the user
+    """
+
+    __tablename__ = 'users'
+    id: uuid.UUID = Field(
+        default=uuid.uuid4(), primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
+    )
+    create_time: datetime = Field(
+        default=datetime.now(UTC),
+        sa_column=Column(
+            type_=DateTime, default=datetime.now(UTC), server_default=func.current_timestamp(), nullable=False
+        ),
+    )
+    deleted: bool = Field(
+        default=False, sa_column=Column(type_=BOOLEAN, default=False, server_default=false(), nullable=False)
+    )
+    delete_time: datetime | None = Field(default=None)
+
+
+class UserCreate(UserBase, table=False):
+    """User create SQLModel
+    Non-table User class with inheritance from UserBase.
+    To be used when creating a new User
+
+    Attributes:
+        id (UUID): UUID of the user
+                   Default: uuid.uuid4()
+    """
+
+    id: uuid.UUID = Field(
+        default=uuid.uuid4(), primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
+    )
+
+
+class UserRead(UserBase, table=False):
+    """User read SQLModel
+    Non-table User class with inheritance from UserBase.
+    To be used when retrieving an existing User
+
+    Attributes:
+        id (UUID): UUID of the user
+        create_time (datetime): Time of creation
+        deleted (bool): Flag if the user has logically been deleted
+        delete_time (datetime): Optional. Time of the deletion of the user
+    """
+
+    id: uuid.UUID
+    create_time: datetime
+    deleted: bool
     delete_time: Optional[datetime]
+
+
+class UserUpdate(BaseModel):
+    """User update BaseModel
+    Used to verify input data during update
+
+    Attributes:
+        first_name (str): Optional. First name of the user
+        last_name (str): Optional. Last name/sir name of the user
+        email (str): Optional. Email of the user
+        private (bool): Optional. Flag if the user should be private or public
+    """
+
+    first_name: str | None = None
+    last_name: str | None = None
+    email: str | None = None  # Should this be updateable?
+    private: bool | None = None
 
 
 # class Routes(SQLModel, table=True):
