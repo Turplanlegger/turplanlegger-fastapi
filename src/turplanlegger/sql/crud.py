@@ -4,9 +4,9 @@ from uuid import UUID
 from sqlmodel import Session, delete, select
 
 from .database import engine
-from .models import User, UserCreate, UserUpdate
+from .models import User, UserCreate, UserUpdate, Note, NoteCreate
 
-
+# Users
 def delete_all_users() -> None:
     with Session(engine) as session:
         statement = delete(User)
@@ -56,3 +56,15 @@ def update_user(db: Session, db_user: User, user_updates: UserUpdate) -> User | 
         db.refresh(db_user)
 
     return db_user
+
+# Notes
+def create_note(db: Session, note: NoteCreate) -> Note | None:
+    db_note = Note.model_validate(note)
+    db.add(db_note)
+    db.commit()
+    db.refresh(db_note)
+    return db_note
+
+def get_all_notes(db: Session) -> Sequence[Note]:
+    statement = select(Note)
+    return db.exec(statement).all()
