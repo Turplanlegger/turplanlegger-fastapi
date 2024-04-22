@@ -25,7 +25,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "fastapi==0.110.1",
+  "fastapi==0.110.2",
   "sqlmodel==0.0.16",
   "psycopg==3.1.18",
   "pydantic_settings==2.2.1",
