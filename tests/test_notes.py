@@ -95,3 +95,45 @@ def test_create_public_note(clean_notes_table):
     assert data['private'] is False
     assert data['deleted'] is False
     assert data.get('delete_time') is None
+
+
+
+def test_get_all_notes(clean_notes_table):
+    NOTE_SHORT = GET_NOTE_SHORT()
+    response = client.post('/v1/notes/', json=NOTE_SHORT)
+    assert response.status_code == 200
+
+    NOTE_LONG = GET_NOTE_LONG()
+    response = client.post('/v1/notes/', json=NOTE_LONG)
+    assert response.status_code == 200
+
+    NOTE_PUBLIC = GET_NOTE_PUBLIC()
+    response = client.post('/v1/notes/', json=NOTE_PUBLIC)
+    assert response.status_code == 200
+
+    response = client.get('/v1/notes/')
+    assert response.status_code == 200
+    data = response.json()
+
+    assert len(data) == 3
+
+    assert isinstance(data[0]['id'], str)
+    assert data[0]['content'] == NOTE_SHORT.get('content')
+    assert data[0]['name'] == NOTE_SHORT.get('name')
+    assert data[0]['private'] is True
+    assert data[0]['deleted'] is False
+    assert data[0]['delete_time'] is None
+
+    assert isinstance(data[1]['id'], str)
+    assert data[1]['content'] == NOTE_LONG.get('content')
+    assert data[1]['name'] == NOTE_LONG.get('name')
+    assert data[1]['private'] is True
+    assert data[1]['deleted'] is False
+    assert data[1]['delete_time'] is None
+
+    assert isinstance(data[2]['id'], str)
+    assert data[2]['content'] == NOTE_PUBLIC.get('content')
+    assert data[2]['name'] == NOTE_PUBLIC.get('name')
+    assert data[2]['private'] is False
+    assert data[2]['deleted'] is False
+    assert data[2]['delete_time'] is None
