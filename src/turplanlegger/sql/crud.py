@@ -58,6 +58,12 @@ def update_user(db: Session, db_user: User, user_updates: UserUpdate) -> User | 
     return db_user
 
 # Notes
+def delete_all_notes() -> None:
+    with Session(engine) as session:
+        statement = delete(Note)
+        session.exec(statement)  # type: ignore [call-overload]
+        session.commit()
+
 def create_note(db: Session, note: NoteCreate) -> Note | None:
     db_note = Note.model_validate(note)
     db.add(db_note)
