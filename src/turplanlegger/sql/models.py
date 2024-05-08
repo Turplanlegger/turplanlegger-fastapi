@@ -147,7 +147,7 @@ class Note(NoteBase, table=True):
     __tablename__ = 'notes'
 
     id: uuid.UUID = Field(
-        default=uuid.uuid4(), primary_key=True, index=True, nullable=False, description='ID of the note as UUID'
+        default_factory=uuid.uuid4, primary_key=True, index=True, nullable=False, description='ID of the note as UUID'
     )
     create_time: datetime = Field(
         default=datetime.now(UTC),
