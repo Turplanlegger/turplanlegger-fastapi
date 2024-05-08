@@ -124,8 +124,8 @@ class NoteBase(SQLModel, table=False):
 
     """
     owner: uuid.UUID = Field(foreign_key='users.id', nullable=False, description='ID of the owner')
-    content: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True)) | None
-    name: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True)) | None
+    content: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
+    name: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
     private: bool = Field(
         default=True, sa_column=Column(type_=BOOLEAN, default=True, server_default=false(), nullable=False)
     )
