@@ -21,10 +21,7 @@ router = APIRouter(
 @router.get('/', description='Get all notes', response_model=list[NoteRead])
 def all_notes(session: Session = Depends(get_session)):
     db_notes = crud.get_all_notes(session)
-    print('##############################')
-    print('##############################')
-    print('##############################')
-    pprint(db_notes)
+
     if not db_notes:
         raise HTTPException(status_code=404, detail='No notes found')
     return db_notes
