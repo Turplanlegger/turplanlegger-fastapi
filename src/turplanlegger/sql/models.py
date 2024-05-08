@@ -47,7 +47,7 @@ class User(UserBase, table=True):
 
     __tablename__ = 'users'
     id: uuid.UUID = Field(
-        default=uuid.uuid4(), primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
+        default_factory=uuid.uuid4, primary_key=True, index=True, nullable=False, description='ID of the user as UUID'
     )
     create_time: datetime = Field(
         default=datetime.now(UTC),
