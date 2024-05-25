@@ -74,3 +74,9 @@ def create_note(db: Session, note: NoteCreate) -> Note | None:
 def get_all_notes(db: Session) -> Sequence[Note]:
     statement = select(Note)
     return db.exec(statement).all()
+
+# Remeber to only deliver notes beloging to the requesting user
+def get_note(db: Session, note_id: UUID) -> Note | None:
+    statement = select(Note).where(Note.id == note_id)
+    return db.exec(statement).one_or_none()
+

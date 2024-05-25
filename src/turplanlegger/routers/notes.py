@@ -32,6 +32,13 @@ def create_note(note: NoteCreate, session: Session = Depends(get_session)):
     db_note = crud.create_note(db=session, note=note)
     return db_note
 
+@router.get('/{note_id}', description='Get a single note by id', response_model=NoteRead)
+def get_note(note_id: UUID, session: Session = Depends(get_session)):
+    db_note = crud.get_note(session, note_id)
+    if not db_note:
+        raise HTTPException(status_code=404, detail='Note not found')
+    return db_note
+
 
 # @router.get('/{user_id}', description='Get user by id', response_model=UserRead)
 # def get_user(user_id: UUID, session: Session = Depends(get_session)):

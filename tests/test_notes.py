@@ -137,3 +137,23 @@ def test_get_all_notes(clean_notes_table):
     assert data[2]['private'] is False
     assert data[2]['deleted'] is False
     assert data[2]['delete_time'] is None
+
+def test_get_single_note(clean_notes_table):
+    NOTE = GET_NOTE_SHORT()
+    response = client.post('/v1/notes/', json=NOTE)
+
+    data = response.json()
+
+    assert response.status_code == 200
+    note_id = data['id']
+
+    response = client.get(f'/v1/notes/{note_id}')
+
+    assert response.status_code == 200
+    assert isinstance(data['id'], str)
+    assert data['content'] == NOTE.get('content')
+    assert data['name'] == NOTE.get('name')
+    assert data['private'] is True
+    assert data['deleted'] is False
+    assert data.get('delete_time') is None
+
