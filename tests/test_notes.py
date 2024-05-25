@@ -157,3 +157,21 @@ def test_get_single_note(clean_notes_table):
     assert data['deleted'] is False
     assert data.get('delete_time') is None
 
+
+def test_get_deleted_note(clean_notes_table):
+    NOTE = GET_NOTE_SHORT()
+
+    response = client.post('/v1/notes/', json=NOTE)
+    data = response.json()
+
+    assert response.status_code == 200
+    note_id = data['id']
+
+    response = client.get(f'/v1/notes/{note_id}')
+    assert response.status_code == 200
+
+    response = client.delete(f'/v1/notes/{note_id}')
+    assert response.status_code == 204
+
+    response = client.get(f'/v1/notes/{note_id}')
+    assert response.status_code == 404

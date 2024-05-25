@@ -80,3 +80,7 @@ def get_note(db: Session, note_id: UUID) -> Note | None:
     statement = select(Note).where(Note.id == note_id)
     return db.exec(statement).one_or_none()
 
+def delete_note(db: Session, note: Note) -> None:
+    db.delete(note)
+    db.commit()
+

@@ -39,6 +39,16 @@ def get_note(note_id: UUID, session: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail='Note not found')
     return db_note
 
+@router.delete('/{note_id}', description='Delete single note by id', status_code=HTTPStatus.NO_CONTENT)
+def delete_note(note_id: UUID, session: Session = Depends(get_session)) -> Response:
+    db_note = crud.get_note(session, note_id)
+    if not db_note:
+        raise HTTPException(status_code=404, detail='Note not found')
+
+    crud.delete_note(session, db_note)
+
+    return Response(status_code=HTTPStatus.NO_CONTENT.value)
+
 
 # @router.get('/{user_id}', description='Get user by id', response_model=UserRead)
 # def get_user(user_id: UUID, session: Session = Depends(get_session)):
