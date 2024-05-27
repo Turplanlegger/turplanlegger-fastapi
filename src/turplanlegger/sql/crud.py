@@ -59,12 +59,14 @@ def update_user(db: Session, db_user: User, user_updates: UserUpdate) -> User | 
 
     return db_user
 
+
 # Notes
 def delete_all_notes() -> None:
     with Session(engine) as session:
         statement = delete(Note)
         session.exec(statement)  # type: ignore [call-overload]
         session.commit()
+
 
 def create_note(db: Session, note: NoteCreate) -> Note | None:
     db_note = Note.model_validate(note)
@@ -73,14 +75,17 @@ def create_note(db: Session, note: NoteCreate) -> Note | None:
     db.refresh(db_note)
     return db_note
 
+
 def get_all_notes(db: Session) -> Sequence[Note]:
     statement = select(Note)
     return db.exec(statement).all()
+
 
 # Remeber to only deliver notes beloging to the requesting user
 def get_note(db: Session, note_id: UUID) -> Note | None:
     statement = select(Note).where(Note.id == note_id)
     return db.exec(statement).one_or_none()
+
 
 def update_note(db: Session, db_note: Note, note_update: NoteUpdate) -> Note | None:
     updated = False
@@ -99,7 +104,7 @@ def update_note(db: Session, db_note: Note, note_update: NoteUpdate) -> Note | N
 
     return db_note
 
+
 def delete_note(db: Session, note: Note) -> None:
     db.delete(note)
     db.commit()
-

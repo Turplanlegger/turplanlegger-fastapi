@@ -9,43 +9,43 @@ from src.turplanlegger.sql.crud import delete_all_notes, delete_all_users
 client = TestClient(app)
 
 USER_PRIVATE = {
-        'id': str(uuid4()),
-        'first_name': 'Petter',
-        'last_name': 'Smart',
-        'email': 'petter@smart.no',
-        'auth_method': 'basic',
-        'private': True,
-    }
+    'id': str(uuid4()),
+    'first_name': 'Petter',
+    'last_name': 'Smart',
+    'email': 'petter@smart.no',
+    'auth_method': 'basic',
+    'private': True,
+}
+
 
 def GET_NOTE_SHORT():
-    return {
-        'owner': USER_PRIVATE.get('id'),
-        'name': 'Short note',
-        'content': 'This is not a long note Petter'
-    }
+    return {'owner': USER_PRIVATE.get('id'), 'name': 'Short note', 'content': 'This is not a long note Petter'}
 
 
 def GET_NOTE_LONG():
     return {
         'owner': USER_PRIVATE.get('id'),
         'name': 'Long note',
-        'content': 'This is a long note, it has many many characters. Many more than I can be bothered to write right now'
+        'content': 'This is a long note, it has many many characters. Many more than I can be bothered to write right now',
     }
+
 
 def GET_NOTE_PUBLIC():
     return {
         'owner': USER_PRIVATE.get('id'),
         'name': 'Private note',
         'content': 'Martin, ensure that this is a private note!!! 🔥🔥',
-        'private': False
+        'private': False,
     }
+
 
 def GET_NOTE_UPDATES():
     return {
         'name': 'I have a new name',
         'content': 'And a brand new content. And if you watch closely the private key has also been changed 🥸',
-        'private': False
+        'private': False,
     }
+
 
 @fixture(scope='session', autouse=True)
 def my_fixture():
@@ -56,6 +56,7 @@ def my_fixture():
     yield
     delete_all_notes()
     delete_all_users()
+
 
 @fixture(scope='function')
 def clean_notes_table():
@@ -77,6 +78,7 @@ def test_create_short_note(clean_notes_table):
     assert data['deleted'] is False
     assert data.get('delete_time') is None
 
+
 def test_create_long_note(clean_notes_table):
     NOTE = GET_NOTE_LONG()
     response = client.post('/v1/notes/', json=NOTE)
@@ -91,6 +93,7 @@ def test_create_long_note(clean_notes_table):
     assert data['deleted'] is False
     assert data.get('delete_time') is None
 
+
 def test_create_public_note(clean_notes_table):
     NOTE = GET_NOTE_PUBLIC()
     response = client.post('/v1/notes/', json=NOTE)
@@ -104,7 +107,6 @@ def test_create_public_note(clean_notes_table):
     assert data['private'] is False
     assert data['deleted'] is False
     assert data.get('delete_time') is None
-
 
 
 def test_get_all_notes(clean_notes_table):
@@ -147,6 +149,7 @@ def test_get_all_notes(clean_notes_table):
     assert data[2]['deleted'] is False
     assert data[2]['delete_time'] is None
 
+
 def test_get_single_note(clean_notes_table):
     NOTE = GET_NOTE_SHORT()
     response = client.post('/v1/notes/', json=NOTE)
@@ -185,6 +188,7 @@ def test_get_deleted_note(clean_notes_table):
     response = client.get(f'/v1/notes/{note_id}')
     assert response.status_code == 404
 
+
 def test_update_note(clean_notes_table):
     NOTE = GET_NOTE_SHORT()
     NOTE_UPDATES = GET_NOTE_UPDATES()
@@ -207,6 +211,7 @@ def test_update_note(clean_notes_table):
     assert data['deleted'] is False
     assert data.get('delete_time') is None
 
+
 def test_update_note_content(clean_notes_table):
     NOTE = GET_NOTE_SHORT()
     CONTENT = 'A newer version of content, but only content'
@@ -217,12 +222,7 @@ def test_update_note_content(clean_notes_table):
     assert response.status_code == 200
     note_id = data['id']
 
-    response = client.put(
-        f'/v1/notes/{note_id}',
-        json={
-            'content': CONTENT
-        }
-    )
+    response = client.put(f'/v1/notes/{note_id}', json={'content': CONTENT})
     assert response.status_code == 200
     data = response.json()
 
@@ -232,6 +232,7 @@ def test_update_note_content(clean_notes_table):
     assert data['private'] is True
     assert data['deleted'] is False
     assert data.get('delete_time') is None
+
 
 def test_update_note_name(clean_notes_table):
     NOTE = GET_NOTE_SHORT()
@@ -243,12 +244,7 @@ def test_update_note_name(clean_notes_table):
     assert response.status_code == 200
     note_id = data['id']
 
-    response = client.put(
-        f'/v1/notes/{note_id}',
-        json={
-            'name': NAME
-        }
-    )
+    response = client.put(f'/v1/notes/{note_id}', json={'name': NAME})
     assert response.status_code == 200
     data = response.json()
 
@@ -258,6 +254,7 @@ def test_update_note_name(clean_notes_table):
     assert data['private'] is True
     assert data['deleted'] is False
     assert data.get('delete_time') is None
+
 
 def test_update_note_remove_attr(clean_notes_table):
     NOTE = GET_NOTE_SHORT()
@@ -269,13 +266,7 @@ def test_update_note_remove_attr(clean_notes_table):
     assert response.status_code == 200
     note_id = data['id']
 
-    response = client.put(
-        f'/v1/notes/{note_id}',
-        json={
-            'content': None,
-            'name': None
-        }
-    )
+    response = client.put(f'/v1/notes/{note_id}', json={'content': None, 'name': None})
     assert response.status_code == 200
     data = response.json()
 
@@ -286,6 +277,7 @@ def test_update_note_remove_attr(clean_notes_table):
     assert data['deleted'] is False
     assert data.get('delete_time') is None
 
+
 def test_update_note_set_public_private(clean_notes_table):
     NOTE_PRIVATE = GET_NOTE_SHORT()
     NOTE_PUBLIC = GET_NOTE_PUBLIC()
@@ -295,12 +287,7 @@ def test_update_note_set_public_private(clean_notes_table):
     assert response.status_code == 200
     note_id = data['id']
 
-    response = client.put(
-        f'/v1/notes/{note_id}',
-        json={
-            'private': False
-        }
-    )
+    response = client.put(f'/v1/notes/{note_id}', json={'private': False})
     assert response.status_code == 200
     data = response.json()
 
@@ -316,12 +303,7 @@ def test_update_note_set_public_private(clean_notes_table):
     assert response.status_code == 200
     note_id = data['id']
 
-    response = client.put(
-        f'/v1/notes/{note_id}',
-        json={
-            'private': True
-        }
-    )
+    response = client.put(f'/v1/notes/{note_id}', json={'private': True})
     assert response.status_code == 200
     data = response.json()
 

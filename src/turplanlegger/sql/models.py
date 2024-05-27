@@ -124,6 +124,7 @@ class NoteBase(SQLModel, table=False):
                         Default: True
 
     """
+
     owner: uuid.UUID = Field(foreign_key='users.id', nullable=False, description='ID of the owner')
     content: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
     name: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
@@ -188,6 +189,7 @@ class NoteRead(NoteBase, table=False):
     delete_time: Optional[datetime]
     update_time: Optional[datetime]
 
+
 class NoteUpdate(BaseModel):
     """Note update BaseModel
     Used to verify input during update
@@ -198,10 +200,12 @@ class NoteUpdate(BaseModel):
         name (str): Optional. Note name
         private (bool): Optional. Flag if the note should be private or public
     """
+
     owner: uuid.UUID | None = None
     content: str | None = None
     name: str | None = None
     private: bool | None = None
+
 
 # class UserUpdate(BaseModel):
 #     """User update BaseModel
