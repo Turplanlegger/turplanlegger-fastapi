@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 from fastapi.testclient import TestClient
-from pytest import fixture
+from pytest import fixture 
 
 from src.turplanlegger.main import app
 from src.turplanlegger.sql.crud import delete_all_users, delete_all_notes
@@ -40,15 +40,24 @@ def GET_NOTE_PUBLIC():
         'private': False
     }
 
+def GET_NOTE_UPDATES():
+    return {
+        'name': 'I have a new name',
+        'content': 'And a brand new content. And if you watch closely the private key has also been changed 🥸',
+        'private': False
+    }
+
 @fixture(scope="session", autouse=True)
 def my_fixture():
+    delete_all_notes()
     delete_all_users()
     response = client.post('/v1/users/', json=USER_PRIVATE)
     assert response.status_code == 200
     yield
+    delete_all_notes()
     delete_all_users()
 
-@fixture()
+@fixture(scope="function")
 def clean_notes_table():
     yield
     delete_all_notes()
@@ -175,3 +184,104 @@ def test_get_deleted_note(clean_notes_table):
 
     response = client.get(f'/v1/notes/{note_id}')
     assert response.status_code == 404
+
+def test_update_note(clean_notes_table):
+    NOTE = GET_NOTE_SHORT()
+    NOTE_UPDATES = GET_NOTE_UPDATES()
+
+    response = client.post('/v1/notes/', json=NOTE)
+    data = response.json()
+
+    assert response.status_code == 200
+    note_id = data['id']
+
+    response = client.put(f'/v1/notes/{note_id}', json=NOTE_UPDATES)
+    assert response.status_code == 200
+    
+    data = response.json()
+
+    assert data['id'] == note_id
+    assert data['content'] == NOTE_UPDATES.get('content')
+    assert data['name'] == NOTE_UPDATES.get('name')
+    assert data['private'] is NOTE_UPDATES.get('private')
+    assert data['deleted'] is False
+    assert data.get('delete_time') is None
+
+def test_update_note_content(clean_notes_table):
+    NOTE = GET_NOTE_SHORT()
+    CONTENT = 'A newer version of content, but only content'
+
+    response = client.post('/v1/notes/', json=NOTE)
+    data = response.json()
+
+    assert response.status_code == 200
+    note_id = data['id']
+
+    response = client.put(
+        f'/v1/notes/{note_id}',
+        json={
+            'content': CONTENT
+        }
+    )
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data['id'] == note_id
+    assert data['content'] == CONTENT
+    assert data['name'] == NOTE.get('name')
+    assert data['private'] is True
+    assert data['deleted'] is False
+    assert data.get('delete_time') is None
+
+def test_update_note_name(clean_notes_table):
+    NOTE = GET_NOTE_SHORT()
+    NAME = 'A newer version of title, but only title'
+
+    response = client.post('/v1/notes/', json=NOTE)
+    data = response.json()
+
+    assert response.status_code == 200
+    note_id = data['id']
+
+    response = client.put(
+        f'/v1/notes/{note_id}',
+        json={
+            'name': NAME
+        }
+    )
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data['id'] == note_id
+    assert data['content'] == NOTE.get('content')
+    assert data['name'] == NAME
+    assert data['private'] is True
+    assert data['deleted'] is False
+    assert data.get('delete_time') is None
+
+def test_update_note_remove_attr(clean_notes_table):
+    NOTE = GET_NOTE_SHORT()
+    NAME = 'A newer version of title, but only title'
+
+    response = client.post('/v1/notes/', json=NOTE)
+    data = response.json()
+
+    assert response.status_code == 200
+    note_id = data['id']
+
+    response = client.put(
+        f'/v1/notes/{note_id}',
+        json={
+            'content': None,
+            'name': None
+        }
+    )
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data['id'] == note_id
+    assert data['content'] is None
+    assert data['name'] is None
+    assert data['private'] is True
+    assert data['deleted'] is False
+    assert data.get('delete_time') is None

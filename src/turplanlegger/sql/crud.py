@@ -1,10 +1,11 @@
+from datetime import datetime, UTC
 from typing import Sequence
 from uuid import UUID
 
 from sqlmodel import Session, delete, select
 
 from .database import engine
-from .models import User, UserCreate, UserUpdate, Note, NoteCreate
+from .models import User, UserCreate, UserUpdate, Note, NoteCreate, NoteUpdate
 
 # Users
 def delete_all_users() -> None:
@@ -79,6 +80,23 @@ def get_all_notes(db: Session) -> Sequence[Note]:
 def get_note(db: Session, note_id: UUID) -> Note | None:
     statement = select(Note).where(Note.id == note_id)
     return db.exec(statement).one_or_none()
+
+def update_note(db: Session, db_note: Note, note_update: NoteUpdate) -> Note | None:
+    updated = False
+
+    updated_attrs = note_update.model_dump(exclude_unset=True)
+
+    for attr, value in updated_attrs.items():
+        setattr(db_note, attr, value)
+        updated = True
+
+    if updated is True:
+        setattr(db_note, 'update_time', datetime.now(UTC))
+        db.add(db_note)
+        db.commit()
+        db.refresh(db_note)
+
+    return db_note
 
 def delete_note(db: Session, note: Note) -> None:
     db.delete(note)
