@@ -124,13 +124,11 @@ class NoteBase(SQLModel, table=False):
                         Default: True
 
     """
-
+    content: str | None = None
+    name: str | None = None
+    private: bool | None = True
     owner: uuid.UUID = Field(foreign_key='users.id', nullable=False, description='ID of the owner')
-    content: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
-    name: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
-    private: bool = Field(
-        default=True, sa_column=Column(type_=BOOLEAN, default=True, server_default=false(), nullable=False)
-    )
+
 
 
 class Note(NoteBase, table=True):
@@ -151,6 +149,11 @@ class Note(NoteBase, table=True):
     id: uuid.UUID = Field(
         default_factory=uuid.uuid4, primary_key=True, index=True, nullable=False, description='ID of the note as UUID'
     )
+    content: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
+    name: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
+    private: bool = Field(
+        default=True, sa_column=Column(type_=BOOLEAN, default=True, server_default=false(), nullable=False)
+    )
     create_time: datetime = Field(
         default=datetime.now(UTC),
         sa_column=Column(
@@ -165,9 +168,7 @@ class Note(NoteBase, table=True):
 
 
 class NoteCreate(NoteBase, table=False):
-    content: str | None = None
-    name: str | None = None
-
+    pass
 
 class NoteRead(NoteBase, table=False):
     """Note read SQLModel
@@ -182,8 +183,6 @@ class NoteRead(NoteBase, table=False):
     """
 
     id: uuid.UUID
-    content: str | None = None
-    name: str | None = None
     create_time: datetime
     deleted: bool
     delete_time: Optional[datetime]
