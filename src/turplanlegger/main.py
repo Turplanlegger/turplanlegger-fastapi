@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from .__about__ import __version__
-from .routers import helpers, users, notes
+from .routers import helpers, notes, users
 from .sql.database import init_db
 
 

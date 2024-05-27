@@ -1,11 +1,12 @@
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from typing import Sequence
 from uuid import UUID
 
 from sqlmodel import Session, delete, select
 
 from .database import engine
-from .models import User, UserCreate, UserUpdate, Note, NoteCreate, NoteUpdate
+from .models import Note, NoteCreate, NoteUpdate, User, UserCreate, UserUpdate
+
 
 # Users
 def delete_all_users() -> None:

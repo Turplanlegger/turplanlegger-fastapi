@@ -8,6 +8,7 @@ from sqlalchemy.dialects.postgresql import BOOLEAN, TEXT
 from sqlalchemy.sql import false
 from sqlmodel import Field, SQLModel
 
+
 # Users
 class UserBase(SQLModel, table=False):
     """User base SQLModel

@@ -1,10 +1,10 @@
 from uuid import uuid4
 
 from fastapi.testclient import TestClient
-from pytest import fixture 
+from pytest import fixture
 
 from src.turplanlegger.main import app
-from src.turplanlegger.sql.crud import delete_all_users, delete_all_notes
+from src.turplanlegger.sql.crud import delete_all_notes, delete_all_users
 
 client = TestClient(app)
 
@@ -47,7 +47,7 @@ def GET_NOTE_UPDATES():
         'private': False
     }
 
-@fixture(scope="session", autouse=True)
+@fixture(scope='session', autouse=True)
 def my_fixture():
     delete_all_notes()
     delete_all_users()
@@ -57,7 +57,7 @@ def my_fixture():
     delete_all_notes()
     delete_all_users()
 
-@fixture(scope="function")
+@fixture(scope='function')
 def clean_notes_table():
     yield
     delete_all_notes()
@@ -68,7 +68,7 @@ def test_create_short_note(clean_notes_table):
     response = client.post('/v1/notes/', json=NOTE)
 
     data = response.json()
-    
+
     assert response.status_code == 200
     assert isinstance(data['id'], str)
     assert data['content'] == NOTE.get('content')
@@ -197,7 +197,7 @@ def test_update_note(clean_notes_table):
 
     response = client.put(f'/v1/notes/{note_id}', json=NOTE_UPDATES)
     assert response.status_code == 200
-    
+
     data = response.json()
 
     assert data['id'] == note_id
