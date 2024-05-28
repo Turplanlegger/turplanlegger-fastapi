@@ -124,11 +124,11 @@ class NoteBase(SQLModel, table=False):
                         Default: True
 
     """
+
     content: str | None = None
     name: str | None = None
     private: bool | None = True
     owner: uuid.UUID = Field(foreign_key='users.id', nullable=False, description='ID of the owner')
-
 
 
 class Note(NoteBase, table=True):
@@ -169,6 +169,7 @@ class Note(NoteBase, table=True):
 
 class NoteCreate(NoteBase, table=False):
     pass
+
 
 class NoteRead(NoteBase, table=False):
     """Note read SQLModel

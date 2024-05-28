@@ -26,7 +26,8 @@ def GET_NOTE_LONG():
     return {
         'owner': USER_PRIVATE.get('id'),
         'name': 'Long note',
-        'content': 'This is a long note, it has many many characters. Many more than I can be bothered to write right now',
+        'content': 'This is a long note, it has many many characters. '
+        'Many more than I can be bothered to write right now',
     }
 
 
@@ -258,7 +259,6 @@ def test_update_note_name(clean_notes_table):
 
 def test_update_note_remove_attr(clean_notes_table):
     NOTE = GET_NOTE_SHORT()
-    NAME = 'A newer version of title, but only title'
 
     response = client.post('/v1/notes/', json=NOTE)
     data = response.json()
