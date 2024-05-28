@@ -207,22 +207,6 @@ class NoteUpdate(BaseModel):
     private: bool | None = None
 
 
-# class UserUpdate(BaseModel):
-#     """User update BaseModel
-#     Used to verify input data during update
-
-#     Attributes:
-#         first_name (str): Optional. First name of the user
-#         last_name (str): Optional. Last name/sir name of the user
-#         email (str): Optional. Email of the user
-#         private (bool): Optional. Flag if the user should be private or public
-#     """
-
-#     first_name: str | None = None
-#     last_name: str | None = None
-#     email: str | None = None  # Should this be updateable?
-#     private: bool | None = None
-
 # class Routes(SQLModel, table=True):
 #   __tablename__ = "routes"
 #   id: Optional[int] = Field(default=None, primary_key=True)
