@@ -117,7 +117,7 @@ class NoteBase(SQLModel, table=False):
     """Note base SQLModel
     Non-table Note base SQLModel
     Attributes:
-        owner (UUID): UUID of the user
+        owner (UUID): UUID of the owner/user
         content (str): Note contents
         name (str): Note name
         private (bool): Flag if the note should be private or public
@@ -136,7 +136,7 @@ class Note(NoteBase, table=True):
     Table Note class with inheritance from NoteBase
 
     Attributes:
-        id (UUID): UUID of the user
+        id (UUID): UUID of the note
         create_time (datetime): Time of creation,
                                 Default: datetime.now(UTC)
         deleted (bool): Flag if the user has logically been deleted
@@ -177,7 +177,7 @@ class NoteRead(NoteBase, table=False):
     To be used when retrieving an existing Note
 
     Attributes:
-        id (UUID): UUID of the user
+        id (UUID): UUID of the note
         create_time (datetime): Time of creation
         deleted (bool): Flag if the user has logically been deleted
         delete_time (datetime): Optional. Time of the deletion of the user
@@ -195,7 +195,7 @@ class NoteUpdate(BaseModel):
     Used to verify input during update
 
     Attributes:
-        owner (UUID): Optional. UUID of the user
+        owner (UUID): Optional. UUID of the note
         content (str): Optional. Note contents
         name (str): Optional. Note name
         private (bool): Optional. Flag if the note should be private or public
