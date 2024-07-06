@@ -9,6 +9,7 @@ from sqlalchemy.sql import false
 from sqlmodel import Field, SQLModel
 
 
+# Users
 class UserBase(SQLModel, table=False):
     """User base SQLModel
     Non-table User base SQLModel
@@ -108,6 +109,101 @@ class UserUpdate(BaseModel):
     first_name: str | None = None
     last_name: str | None = None
     email: str | None = None  # Should this be updateable?
+    private: bool | None = None
+
+
+# Notes
+class NoteBase(SQLModel, table=False):
+    """Note base SQLModel
+    Non-table Note base SQLModel
+    Attributes:
+        owner (UUID): UUID of the owner/user
+        content (str): Note contents
+        name (str): Note name
+        private (bool): Flag if the note should be private or public
+                        Default: True
+
+    """
+
+    content: str | None = None
+    name: str | None = None
+    private: bool | None = True
+    owner: uuid.UUID = Field(foreign_key='users.id', nullable=False, description='ID of the owner')
+
+
+class Note(NoteBase, table=True):
+    """Note SQLModel
+    Table Note class with inheritance from NoteBase
+
+    Attributes:
+        id (UUID): UUID of the note
+        create_time (datetime): Time of creation,
+                                Default: datetime.now(UTC)
+        deleted (bool): Flag if the user has logically been deleted
+                        Default: False
+        delete_time (datetime): Time of the deletion of the user
+    """
+
+    __tablename__ = 'notes'
+
+    id: uuid.UUID = Field(
+        default_factory=uuid.uuid4, primary_key=True, index=True, nullable=False, description='ID of the note as UUID'
+    )
+    content: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
+    name: str = Field(default=None, sa_column=Column(type_=TEXT, nullable=True))
+    private: bool = Field(
+        default=True, sa_column=Column(type_=BOOLEAN, default=True, server_default=false(), nullable=False)
+    )
+    create_time: datetime = Field(
+        default=datetime.now(UTC),
+        sa_column=Column(
+            type_=DateTime, default=datetime.now(UTC), server_default=func.current_timestamp(), nullable=False
+        ),
+    )
+    update_time: datetime | None = Field(default=None)
+    deleted: bool = Field(
+        default=False, sa_column=Column(type_=BOOLEAN, default=False, server_default=false(), nullable=False)
+    )
+    delete_time: datetime | None = Field(default=None)
+
+
+class NoteCreate(NoteBase, table=False):
+    pass
+
+
+class NoteRead(NoteBase, table=False):
+    """Note read SQLModel
+    Non-table Note class with inheritance from NoteBase.
+    To be used when retrieving an existing Note
+
+    Attributes:
+        id (UUID): UUID of the note
+        create_time (datetime): Time of creation
+        deleted (bool): Flag if the user has logically been deleted
+        delete_time (datetime): Optional. Time of the deletion of the user
+    """
+
+    id: uuid.UUID
+    create_time: datetime
+    deleted: bool
+    delete_time: Optional[datetime]
+    update_time: Optional[datetime]
+
+
+class NoteUpdate(BaseModel):
+    """Note update BaseModel
+    Used to verify input during update
+
+    Attributes:
+        owner (UUID): Optional. UUID of the note
+        content (str): Optional. Note contents
+        name (str): Optional. Note name
+        private (bool): Optional. Flag if the note should be private or public
+    """
+
+    owner: uuid.UUID | None = None
+    content: str | None = None
+    name: str | None = None
     private: bool | None = None
 
 

@@ -33,6 +33,7 @@ def GET_USER_PUBLIC():
 
 @fixture()
 def clean_users_table():
+    delete_all_users()
     yield
     delete_all_users()
 
