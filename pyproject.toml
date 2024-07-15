@@ -28,7 +28,7 @@ dependencies = [
   "fastapi==0.111.0",
   "sqlmodel==0.0.19",
   "psycopg==3.2.1",
-  "pydantic_settings==2.2.1",
+  "pydantic_settings==2.3.4",
 ]
 [project.optional-dependencies]
 dev = [
